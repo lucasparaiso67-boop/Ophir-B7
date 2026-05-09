@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ophir B7">
+  <link rel="manifest" href="manifest.json">
+  <title>Ophir B7</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #060912;
+      --bg-base: #0a0e1a;
+      --bg-card: #111827;
+      --bg-elev: #1a2336;
+      --line: #1f2a40;
+      --line-soft: #15203362;
+      --ink-1: #f5e9c8;
+      --ink-2: #c9d4e8;
+      --ink-3: #6b7993;
+      --ink-mute: #3d4863;
+      --gold: #c9a74a;
+      --gold-bright: #e6c866;
+      --gold-deep: #8a6d20;
+      --blue: #3a6df0;
+      --blue-deep: #1d3a8a;
+      --blue-soft: #5a8aff20;
+      --danger: #d94c5c;
+      --success: #4ea882;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      background: var(--bg-deep);
+      color: var(--ink-2);
+      font-family: 'Inter Tight', -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      min-height: 100vh;
+      overscroll-behavior-y: none;
+    }
+    body {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(58, 109, 240, 0.12), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(201, 167, 74, 0.08), transparent 60%),
+        var(--bg-deep);
+      padding-bottom: 90px;
+      padding-top: env(safe-area-inset-top);
+    }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    input, textarea, select {
+      font-family: inherit;
+      background: var(--bg-elev);
+      border: 1px solid var(--line);
+      color: var(--ink-1);
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      width: 100%;
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--gold); }
+    textarea { resize: vertical; min-height: 70px; }
+
+    /* HEADER */
+    .top {
+      padding: 22px 20px 14px;
+      border-bottom: 1px solid var(--line-soft);
+      background: linear-gradient(180deg, rgba(10,14,26,.95), rgba(10,14,26,.7));
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .brand { display: flex; align-items: baseline; gap: 10px; }
+    .brand-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-size: 28px;
+      letter-spacing: .02em;
+      color: var(--ink-1);
+      line-height: 1;
+    }
+    .brand-mark .seven {
+      color: var(--gold);
+      font-style: italic;
+      font-weight: 600;
+      position: relative;
+      margin: 0 1px;
+    }
+    .brand-mark .seven::before {
+      content: '';
+      position: absolute;
+      inset: -2px -4px;
+      background: radial-gradient(circle, rgba(201,167,74,.25), transparent 70%);
+      z-index: -1;
+    }
+    .brand-tag {
+      font-size: 9px;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      font-weight: 500;
+    }
+    .top-actions { display: flex; gap: 8px; margin-top: 14px; }
+    .top-actions button {
+      flex: 1;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink-3);
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .top-actions button:active { background: var(--bg-elev); color: var(--ink-1); }
+
+    /* MAIN */
+    main { padding: 18px 20px; max-width: 720px; margin: 0 auto; }
+    .view-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 400;
+      letter-spacing: -.01em;
+      color: var(--ink-1);
+      margin-bottom: 4px;
+      line-height: 1;
+    }
+    .view-sub {
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 22px;
+    }
+    .view-sub::before { content: '— '; color: var(--gold); }
+
+    /* CARDS */
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+    .stat {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: .4;
+    }
+    .stat-label { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+    .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--ink-1); font-weight: 500; line-height: 1.1; }
+    .stat-value.gold { color: var(--gold-bright); }
+    .stat-value.blue { color: #6e9bff; }
+    .stat-value.danger { color: var(--danger); }
+    .stat-meta { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+
+    /* LIST ITEM */
+    .item { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; transition: border-color .15s; }
+    .item:active { border-color: var(--gold-deep); }
+    .item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .item-title { font-size: 15px; color: var(--ink-1); font-weight: 500; flex: 1; }
+    .item-meta { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+    .item-actions { display: flex; gap: 6px; margin-top: 10px; }
+    .item-btn { background: var(--bg-elev); border: 1px solid var(--line); padding: 6px 10px; border-radius: 6px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+    .item-btn.primary { color: var(--gold); border-color: var(--gold-deep); }
+    .item-btn.danger { color: var(--danger); }
+    .empty { text-align: center; padding: 40px 20px; color: var(--ink-mute); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 18px; }
+
+    /* FAB */
+    .fab {
+      position: fixed; bottom: 100px; right: 20px;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-bright), var(--gold-deep));
+      color: #0a0e1a; font-size: 28px; font-weight: 300;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(201,167,74,.35), 0 2px 8px rgba(0,0,0,.5);
+      z-index: 40; line-height: 1;
+    }
+    .fab:active { transform: scale(.94); }
+
+    /* TAB BAR */
+    .tabs {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(6,9,18,.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--line);
+      display: flex;
+      padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+      z-index: 50;
+    }
+    .tab { flex: 1; padding: 8px 4px; display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ink-mute); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; transition: color .15s; }
+    .tab svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .tab.active { color: var(--gold); }
+    .tab.active svg { filter: drop-shadow(0 0 6px rgba(201,167,74,.4)); }
+
+    /* MODAL */
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); z-index: 100; display: none; align-items: flex-end; justify-content: center; }
+    .modal-bg.open { display: flex; animation: fadeIn .2s; }
+    .modal { background: var(--bg-card); border-top: 1px solid var(--gold-deep); border-radius: 20px 20px 0 0; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); animation: slideUp .25s cubic-bezier(.2,.9,.3,1); }
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    @keyframes slideUp { from { transform: translateY(40px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+    .modal-handle { width: 40px; height: 4px; background: var(--ink-mute); border-radius: 4px; margin: 0 auto 16px; }
+    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--ink-1); margin-bottom: 4px; }
+    .modal-sub { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .btn { flex: 1; padding: 13px; border-radius: var(--radius-sm); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; }
+    .btn-primary { background: linear-gradient(135deg, var(--gold-bright), var(--gold-deep)); color: #0a0e1a; }
+    .btn-ghost { background: transparent; color: var(--ink-3); border: 1px solid var(--line); }
+
+    /* FUNIL */
+    .funnel-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
+    .funnel-tabs::-webkit-scrollbar { display: none; }
+    .funnel-tab { padding: 8px 14px; border-radius: 999px; background: var(--bg-card); border: 1px solid var(--line); color: var(--ink-3); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
+    .funnel-tab.active { background: linear-gradient(135deg, var(--blue-deep), var(--blue)); color: var(--ink-1); border-color: var(--blue); }
+    .funnel-tab .count { margin-left: 6px; color: var(--gold-bright); font-weight: 600; }
+
+    /* TX TYPE TOGGLE */
+    .toggle { display: flex; background: var(--bg-elev); border-radius: var(--radius-sm); padding: 3px; border: 1px solid var(--line); }
+    .toggle button { flex: 1; padding: 9px; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-3); border-radius: 6px; }
+    .toggle button.active { background: var(--bg-card); color: var(--ink-1); }
+    .toggle button.active.income { color: var(--success); }
+    .toggle button.active.expense { color: var(--danger); }
+
+    .badge { display: inline-block; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+    .badge-income { background: rgba(78,168,130,.15); color: var(--success); }
+    .badge-expense { background: rgba(217,76,92,.15); color: var(--danger); }
+    .badge-stage { background: var(--blue-soft); color: #6e9bff; border: 1px solid var(--blue-deep); }
+
+    .progress-bar { width: 100%; height: 6px; background: var(--bg-elev); border-radius: 3px; overflow: hidden; margin-top: 8px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--gold)); transition: width .4s; }
+
+    .check { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--ink-mute); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
+    .check.done { background: var(--gold); border-color: var(--gold); color: #0a0e1a; }
+    .check.done::after { content: '✓'; font-weight: 700; font-size: 14px; }
+
+    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--gold); color: var(--ink-1); padding: 10px 18px; border-radius: 999px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity .25s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+
+    .verse { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--ink-3); text-align: center; padding: 16px; margin: 16px 0 22px; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); line-height: 1.6; }
+    .verse cite { display: block; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-style: normal; margin-top: 6px; }
+
+    .backup-banner { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius); margin-bottom: 16px; cursor: pointer; border: 1px solid; transition: transform .15s; }
+    .backup-banner:active { transform: scale(.98); }
+    .backup-banner.warn { background: linear-gradient(135deg, rgba(217,76,92,.12), rgba(217,76,92,.04)); border-color: rgba(217,76,92,.4); }
+    .backup-banner.info { background: linear-gradient(135deg, rgba(201,167,74,.1), rgba(201,167,74,.03)); border-color: rgba(201,167,74,.3); }
+    .backup-icon { font-size: 18px; flex-shrink: 0; }
+    .backup-msg { flex: 1; font-size: 12px; color: var(--ink-1); line-height: 1.4; }
+    .backup-cta { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-bright); font-weight: 600; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark">Ophir B<span class="seven">7</span></span>
+    <span class="brand-tag">Business · Lucas</span>
+  </div>
+  <div class="top-actions">
+    <button onclick="exportData()">↓ Exportar</button>
+    <button onclick="importData()">↑ Importar</button>
+    <button onclick="if(confirm('Apagar TUDO? Faça backup antes.')) resetAll()">⌫ Limpar</button>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<button class="fab" id="fab" onclick="openModal()">+</button>
+
+<nav class="tabs">
+  <button class="tab" data-view="dashboard" onclick="setView('dashboard')">
+    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+    Painel
+  </button>
+  <button class="tab" data-view="finance" onclick="setView('finance')">
+    <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+    Finança
+  </button>
+  <button class="tab" data-view="agenda" onclick="setView('agenda')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    Agenda
+  </button>
+  <button class="tab" data-view="funnel" onclick="setView('funnel')">
+    <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 9v6l-4 2v-8z"/></svg>
+    Funil
+  </button>
+  <button class="tab" data-view="goals" onclick="setView('goals')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+    Metas
+  </button>
+  <button class="tab" data-view="plans" onclick="setView('plans')">
+    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    Planos
+  </button>
+</nav>
+
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== STATE =====
+const STORAGE_KEY = 'ophir_b7_v1';
+const STAGES = ['Lead', 'Visita', 'Proposta', 'Fechado', 'Perdido'];
+
+const defaultData = {
+  finance: [],
+  agenda: [],
+  deals: [],
+  goals: [],
+  plans: [],
+  meta: { lastBackup: null, lastUsed: null }
+};
+
+let data = load();
+let currentView = 'dashboard';
+let modalCtx = null;
+let funnelStage = 'Lead';
+let txType = 'income';
+let editingId = null;
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return structuredClone(defaultData);
+    const parsed = JSON.parse(raw);
+    const merged = { ...structuredClone(defaultData), ...parsed };
+    if (!merged.meta) merged.meta = { lastBackup: null, lastUsed: null };
+    return merged;
+  } catch { return structuredClone(defaultData); }
+}
+
+function save() {
+  data.meta = data.meta || { lastBackup: null, lastUsed: null };
+  data.meta.lastUsed = Date.now();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function fmt(v) { return 'R$ ' + (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtDate(s) { if (!s) return ''; const d = new Date(s + 'T00:00'); return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }); }
+function todayISO() { return new Date().toISOString().slice(0, 10); }
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ===== ROUTER =====
+function setView(v) {
+  currentView = v;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
+  render();
+}
+
+function render() {
+  const main = document.getElementById('main');
+  const fab = document.getElementById('fab');
+  fab.style.display = currentView === 'dashboard' ? 'none' : 'flex';
+  main.innerHTML = views[currentView]();
+}
+
+// ===== VIEWS =====
+const views = {
+  dashboard() {
+    const month = new Date().toISOString().slice(0, 7);
+    const monthTx = data.finance.filter(t => t.date && t.date.startsWith(month));
+    const income = monthTx.filter(t => t.type === 'income').reduce((s, t) => s + Number(t.value), 0);
+    const expense = monthTx.filter(t => t.type === 'expense').reduce((s, t) => s + Number(t.value), 0);
+    const liquid = income - expense;
+    const activeDeals = data.deals.filter(d => !['Fechado', 'Perdido'].includes(d.stage));
+    const pipelineValue = activeDeals.reduce((s, d) => s + Number(d.value || 0), 0);
+    const closed = data.deals.filter(d => d.stage === 'Fechado').length;
+    const today = todayISO();
+    const upcoming = data.agenda.filter(a => !a.done && a.date >= today).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 3);
+    const verses = [
+      ['Os planos bem elaborados levam à fartura; mas o apressado sempre acaba na miséria.', 'Provérbios 21:5'],
+      ['Tudo o que as tuas mãos tiverem que fazer, faze-o conforme as tuas forças.', 'Eclesiastes 9:10'],
+      ['Antes do dia raiar, eu clamarei por socorro; minha esperança está nas tuas palavras.', 'Salmos 119:147'],
+      ['Eis que vos faço uma coisa nova, agora sairá à luz; porventura não a percebeis?', 'Isaías 43:19'],
+      ['Os que esperam no Senhor renovarão as suas forças.', 'Isaías 40:31'],
+    ];
+    const v = verses[new Date().getDate() % verses.length];
+
+    return `
+      <h1 class="view-title">Painel</h1>
+      <p class="view-sub">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+      ${backupBanner()}
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-label">Entrada do Mês</div>
+          <div class="stat-value gold">${fmt(income)}</div>
+          <div class="stat-meta">${monthTx.filter(t => t.type === 'income').length} comissões</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Saída do Mês</div>
+          <div class="stat-value danger">${fmt(expense)}</div>
+          <div class="stat-meta">${monthTx.filter(t => t.type === 'expense').length} despesas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Saldo Líquido</div>
+          <div class="stat-value ${liquid >= 0 ? 'gold' : 'danger'}">${fmt(liquid)}</div>
+          <div class="stat-meta">no mês corrente</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Pipeline Ativo</div>
+          <div class="stat-value blue">${fmt(pipelineValue)}</div>
+          <div class="stat-meta">${activeDeals.length} negócios · ${closed} fechados</div>
+        </div>
+      </div>
+      <div class="verse">
+        ${v[0]}
+        <cite>${v[1]}</cite>
+      </div>
+      <div class="view-sub" style="margin-top:8px">Próximos compromissos</div>
+      ${upcoming.length === 0
+        ? '<div class="empty">Nada agendado por aqui.</div>'
+        : upcoming.map(a => `
+          <div class="item">
+            <div class="item-head">
+              <div>
+                <div class="item-title">${esc(a.title)}</div>
+                <div class="item-meta">${fmtDate(a.date)}${a.time ? ' · ' + a.time : ''}</div>
+              </div>
+            </div>
+          </div>
+        `).join('')
+      }
+    `;
+  },
+
+  finance() {
+    const month = new Date().toISOString().slice(0, 7);
+    const tx = data.finance.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const monthTx = tx.filter(t => t.date && t.date.startsWith(month));
+    const income = monthTx.filter(t => t.type === 'income').reduce((s, t) => s + Number(t.value), 0);
+    const expense = monthTx.filter(t => t.type === 'expense').reduce((s, t) => s + Number(t.value), 0);
+
+    return `
+      <h1 class="view-title">Finança</h1>
+      <p class="view-sub">Comissões e despesas</p>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="stat-label">Entradas (mês)</div>
+          <div class="stat-value gold">${fmt(income)}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Saídas (mês)</div>
+          <div class="stat-value danger">${fmt(expense)}</div>
+        </div>
+      </div>
+      ${tx.length === 0
+        ? '<div class="empty">Nenhum lançamento ainda. Toque no + para começar.</div>'
+        : tx.map(t => `
+          <div class="item">
+            <div class="item-head">
+              <div style="flex:1">
+                <div class="item-title">${esc(t.desc)}</div>
+                <div class="item-meta">
+                  <span class="badge badge-${t.type}">${t.type === 'income' ? 'Entrada' : 'Saída'}</span>
+                  · ${esc(t.category || 'Geral')} · ${fmtDate(t.date)}
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:${t.type === 'income' ? 'var(--gold-bright)' : 'var(--danger)'}">
+                  ${t.type === 'expense' ? '-' : ''}${fmt(t.value)}
+                </div>
+              </div>
+            </div>
+            <div class="item-actions">
+              <button class="item-btn primary" onclick="editItem('finance','${t.id}')">Editar</button>
+              <button class="item-btn danger" onclick="deleteItem('finance','${t.id}')">Excluir</button>
+            </div>
+          </div>
+        `).join('')
+      }
+    `;
+  },
+
+  agenda() {
+    const today = todayISO();
+    const items = data.agenda.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    const upcoming = items.filter(a => !a.done && a.date >= today);
+    const past = items.filter(a => a.done || a.date < today);
+
+    return `
+      <h1 class="view-title">Agenda</h1>
+      <p class="view-sub">Compromissos & visitas</p>
+      <div class="view-sub" style="margin-top:8px">Próximos · ${upcoming.length}</div>
+      ${upcoming.length === 0
+        ? '<div class="empty">Nenhum compromisso à frente.</div>'
+        : upcoming.map(a => agendaItem(a)).join('')
+      }
+      ${past.length > 0 ? `
+        <div class="view-sub" style="margin-top:24px">Concluídos / Passados</div>
+        ${past.slice(0, 10).map(a => agendaItem(a)).join('')}
+      ` : ''}
+    `;
+  },
+
+  funnel() {
+    const counts = {};
+    STAGES.forEach(s => counts[s] = data.deals.filter(d => d.stage === s).length);
+    const filtered = data.deals.filter(d => d.stage === funnelStage)
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+    return `
+      <h1 class="view-title">Funil</h1>
+      <p class="view-sub">Captação → Fechamento</p>
+      <div class="funnel-tabs">
+        ${STAGES.map(s => `
+          <button class="funnel-tab ${funnelStage === s ? 'active' : ''}" onclick="setFunnelStage('${s}')">
+            ${s} <span class="count">${counts[s]}</span>
+          </button>
+        `).join('')}
+      </div>
+      ${filtered.length === 0
+        ? '<div class="empty">Nenhum negócio neste estágio.</div>'
+        : filtered.map(d => `
+          <div class="item">
+            <div class="item-head">
+              <div style="flex:1">
+                <div class="item-title">${esc(d.name)}</div>
+                <div class="item-meta">
+                  ${d.property ? esc(d.property) + ' · ' : ''}${d.contact ? esc(d.contact) : ''}
+                </div>
+                ${d.value ? `<div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold-bright);margin-top:6px">${fmt(d.value)}</div>` : ''}
+                ${d.notes ? `<div class="item-meta" style="margin-top:6px;font-style:italic">${esc(d.notes)}</div>` : ''}
+              </div>
+            </div>
+            <div class="item-actions">
+              ${STAGES.filter(s => s !== d.stage).slice(0, 2).map(s => `
+                <button class="item-btn primary" onclick="moveDeal('${d.id}','${s}')">→ ${s}</button>
+              `).join('')}
+              <button class="item-btn" onclick="editItem('deals','${d.id}')">Editar</button>
+              <button class="item-btn danger" onclick="deleteItem('deals','${d.id}')">×</button>
+            </div>
+          </div>
+        `).join('')
+      }
+    `;
+  },
+
+  goals() {
+    return `
+      <h1 class="view-title">Metas</h1>
+      <p class="view-sub">Onde você quer chegar</p>
+      ${data.goals.length === 0
+        ? '<div class="empty">Sem metas definidas. Comece pelo +.</div>'
+        : data.goals.map(g => {
+          const pct = Math.min(100, (Number(g.current) / Number(g.target)) * 100 || 0);
+          return `
+            <div class="item">
+              <div class="item-head">
+                <div style="flex:1">
+                  <div class="item-title">${esc(g.title)}</div>
+                  <div class="item-meta">
+                    ${Number(g.current).toLocaleString('pt-BR')} / ${Number(g.target).toLocaleString('pt-BR')} ${esc(g.unit || '')}
+                    ${g.deadline ? ' · até ' + fmtDate(g.deadline) : ''}
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+                  <div class="item-meta" style="margin-top:6px">${pct.toFixed(0)}% concluído</div>
+                </div>
+              </div>
+              <div class="item-actions">
+                <button class="item-btn primary" onclick="updateGoal('${g.id}')">Atualizar</button>
+                <button class="item-btn" onclick="editItem('goals','${g.id}')">Editar</button>
+                <button class="item-btn danger" onclick="deleteItem('goals','${g.id}')">Excluir</button>
+              </div>
+            </div>
+          `;
+        }).join('')
+      }
+    `;
+  },
+
+  plans() {
+    return `
+      <h1 class="view-title">Planos</h1>
+      <p class="view-sub">Projetos com etapas</p>
+      ${data.plans.length === 0
+        ? '<div class="empty">Sem planos. Crie um pelo +.</div>'
+        : data.plans.map(p => {
+          const done = (p.steps || []).filter(s => s.done).length;
+          const total = (p.steps || []).length;
+          const pct = total ? (done / total) * 100 : 0;
+          return `
+            <div class="item">
+              <div class="item-head">
+                <div style="flex:1">
+                  <div class="item-title">${esc(p.title)}</div>
+                  ${p.notes ? `<div class="item-meta" style="font-style:italic">${esc(p.notes)}</div>` : ''}
+                  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+                  <div class="item-meta" style="margin-top:6px">${done}/${total} etapas</div>
+                </div>
+              </div>
+              <div style="margin-top:12px">
+                ${(p.steps || []).map((s, i) => `
+                  <div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line-soft)">
+                    <span class="check ${s.done ? 'done' : ''}" onclick="toggleStep('${p.id}',${i})"></span>
+                    <span style="flex:1;color:${s.done ? 'var(--ink-3)' : 'var(--ink-1)'};text-decoration:${s.done ? 'line-through' : 'none'}" onclick="editStep('${p.id}',${i})">${esc(s.text)}</span>
+                    <button class="item-btn danger" style="padding:4px 8px;font-size:10px" onclick="removeStep('${p.id}',${i})">×</button>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="item-actions">
+                <button class="item-btn primary" onclick="addStep('${p.id}')">+ Etapa</button>
+                <button class="item-btn" onclick="editItem('plans','${p.id}')">Editar</button>
+                <button class="item-btn danger" onclick="deleteItem('plans','${p.id}')">Excluir</button>
+              </div>
+            </div>
+          `;
+        }).join('')
+      }
+    `;
+  }
+};
+
+function agendaItem(a) {
+  return `
+    <div class="item">
+      <div class="item-head">
+        <div style="display:flex;gap:12px;flex:1">
+          <div onclick="toggleAgenda('${a.id}')" class="check ${a.done ? 'done' : ''}"></div>
+          <div style="flex:1">
+            <div class="item-title" style="text-decoration:${a.done ? 'line-through' : 'none'};color:${a.done ? 'var(--ink-3)' : 'var(--ink-1)'}">${esc(a.title)}</div>
+            <div class="item-meta">${fmtDate(a.date)}${a.time ? ' · ' + a.time : ''}${a.notes ? ' · ' + esc(a.notes) : ''}</div>
+          </div>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="item-btn primary" onclick="addToCalendar('${a.id}')">📅 Apple</button>
+        <button class="item-btn primary" onclick="addToGoogleCalendar('${a.id}')">🗓️ Google</button>
+        <button class="item-btn" onclick="editItem('agenda','${a.id}')">Editar</button>
+        <button class="item-btn danger" onclick="deleteItem('agenda','${a.id}')">Excluir</button>
+      </div>
+    </div>
+  `;
+}
+
+function esc(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function backupBanner() {
+  const hasData = data.finance.length || data.agenda.length || data.deals.length || data.goals.length || data.plans.length;
+  if (!hasData) return '';
+  const lastBackup = data.meta?.lastBackup;
+  const days = lastBackup ? Math.floor((Date.now() - lastBackup) / 86400000) : null;
+  let level, msg, icon;
+  if (!lastBackup) {
+    level = 'warn'; icon = '⚠️';
+    msg = 'Você ainda não fez nenhum backup. Toque em Exportar agora pra não perder seus dados.';
+  } else if (days >= 7) {
+    level = 'warn'; icon = '⚠️';
+    msg = `Último backup há ${days} dias. Faça um agora.`;
+  } else if (days >= 3) {
+    level = 'info'; icon = '💾';
+    msg = `Último backup há ${days} dias. Faça um quando puder.`;
+  } else {
+    return '';
+  }
+  return `
+    <div class="backup-banner ${level}" onclick="exportData()">
+      <div class="backup-icon">${icon}</div>
+      <div class="backup-msg">${msg}</div>
+      <div class="backup-cta">Backup ›</div>
+    </div>
+  `;
+}
+
+// ===== ACTIONS =====
+function setFunnelStage(s) { funnelStage = s; render(); }
+
+function toggleAgenda(id) {
+  const a = data.agenda.find(x => x.id === id);
+  if (a) { a.done = !a.done; save(); render(); }
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function addToCalendar(id) {
+  const a = data.agenda.find(x => x.id === id);
+  if (!a) return;
+  let dtStart, dtEnd, allDay = false;
+  if (a.time) {
+    const [h, m] = a.time.split(':').map(Number);
+    const start = new Date(a.date + 'T00:00:00');
+    start.setHours(h, m, 0, 0);
+    const dur = Number(a.duration) || 60;
+    const end = new Date(start.getTime() + dur * 60000);
+    const fmtICS = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+    dtStart = `DTSTART:${fmtICS(start)}`;
+    dtEnd = `DTEND:${fmtICS(end)}`;
+  } else {
+    allDay = true;
+    const start = a.date.replace(/-/g, '');
+    const d = new Date(a.date + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    const endStr = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+    dtStart = `DTSTART;VALUE=DATE:${start}`;
+    dtEnd = `DTEND;VALUE=DATE:${endStr}`;
+  }
+  const escIcs = s => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+  const now = new Date();
+  const dtStamp = `${now.getUTCFullYear()}${pad(now.getUTCMonth() + 1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}${pad(now.getUTCSeconds())}Z`;
+  const alarmMin = Number(a.alarm) || 0;
+  const alarmBlock = (alarmMin > 0 && !allDay) ? `BEGIN:VALARM\nTRIGGER:-PT${alarmMin}M\nACTION:DISPLAY\nDESCRIPTION:${escIcs(a.title)}\nEND:VALARM\n` : '';
+  const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Ophir B7//Agenda//PT\nCALSCALE:GREGORIAN\nBEGIN:VEVENT\nUID:${a.id}@ophir-b7\nDTSTAMP:${dtStamp}\n${dtStart}\n${dtEnd}\nSUMMARY:${escIcs(a.title)}\n${a.location ? 'LOCATION:' + escIcs(a.location) + '\n' : ''}${a.notes ? 'DESCRIPTION:' + escIcs(a.notes) + '\n' : ''}${alarmBlock}END:VEVENT\nEND:VCALENDAR`;
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${a.title.replace(/[^a-z0-9]/gi, '_').slice(0, 30)}.ics`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('📅 Abrindo no Calendário...');
+}
+
+function addToGoogleCalendar(id) {
+  const a = data.agenda.find(x => x.id === id);
+  if (!a) return;
+  let dates;
+  if (a.time) {
+    const [h, m] = a.time.split(':').map(Number);
+    const start = new Date(a.date + 'T00:00:00');
+    start.setHours(h, m, 0, 0);
+    const dur = Number(a.duration) || 60;
+    const end = new Date(start.getTime() + dur * 60000);
+    const fmtG = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+    dates = `${fmtG(start)}/${fmtG(end)}`;
+  } else {
+    const start = a.date.replace(/-/g, '');
+    const d = new Date(a.date + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    const endStr = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+    dates = `${start}/${endStr}`;
+  }
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: a.title,
+    dates: dates,
+    details: a.notes || '',
+    location: a.location || '',
+    ctz: Intl.DateTimeFormat().resolvedOptions().timeZone
+  });
+  window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+  toast('🗓️ Abrindo Google Agenda...');
+}
+
+function moveDeal(id, stage) {
+  const d = data.deals.find(x => x.id === id);
+  if (d) { d.stage = stage; save(); toast(`Movido para ${stage}`); render(); }
+}
+
+function toggleStep(planId, idx) {
+  const p = data.plans.find(x => x.id === planId);
+  if (p && p.steps[idx]) { p.steps[idx].done = !p.steps[idx].done; save(); render(); }
+}
+
+function addStep(planId) {
+  const text = prompt('Nova etapa:');
+  if (!text) return;
+  const p = data.plans.find(x => x.id === planId);
+  if (p) { p.steps = p.steps || []; p.steps.push({ text, done: false }); save(); render(); }
+}
+
+function updateGoal(id) {
+  const g = data.goals.find(x => x.id === id);
+  if (!g) return;
+  const v = prompt('Progresso atual (' + g.unit + '):', g.current);
+  if (v === null) return;
+  g.current = Number(v) || 0;
+  save();
+  if (g.current >= g.target) toast('🎯 Meta atingida!');
+  render();
+}
+
+function deleteItem(area, id) {
+  if (!confirm('Excluir este item?')) return;
+  data[area] = data[area].filter(x => x.id !== id);
+  save(); render();
+}
+
+function editItem(area, id) {
+  editingId = id;
+  const map = { finance: 'finance', agenda: 'agenda', deals: 'funnel', goals: 'goals', plans: 'plans' };
+  modalCtx = map[area];
+  const item = data[area].find(x => x.id === id);
+  if (!item) return;
+  if (area === 'finance') txType = item.type;
+  const mc = document.getElementById('modal-content');
+  mc.innerHTML = modalForms[modalCtx](item);
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function editStep(planId, idx) {
+  const p = data.plans.find(x => x.id === planId);
+  if (!p || !p.steps[idx]) return;
+  const text = prompt('Editar etapa:', p.steps[idx].text);
+  if (text === null || !text.trim()) return;
+  p.steps[idx].text = text.trim();
+  save(); render();
+}
+
+function removeStep(planId, idx) {
+  if (!confirm('Remover esta etapa?')) return;
+  const p = data.plans.find(x => x.id === planId);
+  if (!p) return;
+  p.steps.splice(idx, 1);
+  save(); render();
+}
+
+// ===== MODAL =====
+function openModal() {
+  modalCtx = currentView;
+  txType = 'income';
+  editingId = null;
+  const mc = document.getElementById('modal-content');
+  mc.innerHTML = modalForms[currentView] ? modalForms[currentView]() : '';
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function closeModal() {
+  editingId = null;
+  document.getElementById('modal-bg').classList.remove('open');
+}
+
+const modalForms = {
+  finance: (it) => `
+    <div class="modal-handle"></div>
+    <div class="modal-title">${it ? 'Editar' : 'Novo'} Lançamento</div>
+    <div class="modal-sub">Comissão ou despesa</div>
+    <div class="field">
+      <div class="toggle">
+        <button class="${(it ? it.type : 'income') === 'income' ? 'active income' : ''}" id="tx-income" onclick="setTxType('income')">↑ Entrada</button>
+        <button class="${(it ? it.type : 'income') === 'expense' ? 'active expense' : ''}" id="tx-expense" onclick="setTxType('expense')">↓ Saída</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Descrição</label>
+      <input id="f-desc" placeholder="Ex: Comissão Apto Centro / Combustível" value="${it ? esc(it.desc) : ''}">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Valor (R$)</label>
+        <input id="f-value" type="number" step="0.01" inputmode="decimal" placeholder="0,00" value="${it ? it.value : ''}">
+      </div>
+      <div class="field">
+        <label>Data</label>
+        <input id="f-date" type="date" value="${it ? it.date : todayISO()}">
+      </div>
+    </div>
+    <div class="field">
+      <label>Categoria</label>
+      <input id="f-category" placeholder="Comissão / Marketing / Combustível..." value="${it ? esc(it.category || '') : ''}">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveFinance()">${it ? 'Salvar Edição' : 'Salvar'}</button>
+    </div>
+  `,
+
+  agenda: (it) => `
+    <div class="modal-handle"></div>
+    <div class="modal-title">${it ? 'Editar' : 'Novo'} Compromisso</div>
+    <div class="modal-sub">Visita, reunião, ligação</div>
+    <div class="field">
+      <label>Título</label>
+      <input id="a-title" placeholder="Ex: Visita com Família Souza" value="${it ? esc(it.title) : ''}">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Data</label>
+        <input id="a-date" type="date" value="${it ? it.date : todayISO()}">
+      </div>
+      <div class="field">
+        <label>Hora</label>
+        <input id="a-time" type="time" value="${it ? (it.time || '') : ''}">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Duração (min)</label>
+        <input id="a-duration" type="number" inputmode="numeric" placeholder="60" value="${it ? (it.duration || 60) : 60}">
+      </div>
+      <div class="field">
+        <label>Lembrete (min antes)</label>
+        <select id="a-alarm">
+          <option value="0" ${it && it.alarm === '0' ? 'selected' : ''}>Sem alarme</option>
+          <option value="5" ${it && it.alarm === '5' ? 'selected' : ''}>5 min antes</option>
+          <option value="15" ${(!it || it.alarm === '15') ? 'selected' : ''}>15 min antes</option>
+          <option value="30" ${it && it.alarm === '30' ? 'selected' : ''}>30 min antes</option>
+          <option value="60" ${it && it.alarm === '60' ? 'selected' : ''}>1 hora antes</option>
+          <option value="1440" ${it && it.alarm === '1440' ? 'selected' : ''}>1 dia antes</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Local</label>
+      <input id="a-location" placeholder="Endereço ou link" value="${it ? esc(it.location || '') : ''}">
+    </div>
+    <div class="field">
+      <label>Notas</label>
+      <textarea id="a-notes" placeholder="Observações...">${it ? esc(it.notes || '') : ''}</textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveAgenda()">${it ? 'Salvar Edição' : 'Salvar'}</button>
+    </div>
+  `,
+
+  funnel: (it) => `
+    <div class="modal-handle"></div>
+    <div class="modal-title">${it ? 'Editar' : 'Novo'} Negócio</div>
+    <div class="modal-sub">Lead, captação ou venda</div>
+    <div class="field">
+      <label>Cliente</label>
+      <input id="d-name" placeholder="Nome do cliente" value="${it ? esc(it.name) : ''}">
+    </div>
+    <div class="field">
+      <label>Contato</label>
+      <input id="d-contact" placeholder="Telefone / WhatsApp" value="${it ? esc(it.contact || '') : ''}">
+    </div>
+    <div class="field">
+      <label>Imóvel</label>
+      <input id="d-property" placeholder="Ex: Apto 2Q Centro" value="${it ? esc(it.property || '') : ''}">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Valor (R$)</label>
+        <input id="d-value" type="number" step="0.01" inputmode="decimal" placeholder="0,00" value="${it ? (it.value || '') : ''}">
+      </div>
+      <div class="field">
+        <label>Estágio</label>
+        <select id="d-stage">
+          ${STAGES.map(s => `<option ${s === (it ? it.stage : funnelStage) ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Notas</label>
+      <textarea id="d-notes" placeholder="Detalhes, próximos passos...">${it ? esc(it.notes || '') : ''}</textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveDeal()">${it ? 'Salvar Edição' : 'Salvar'}</button>
+    </div>
+  `,
+
+  goals: (it) => `
+    <div class="modal-handle"></div>
+    <div class="modal-title">${it ? 'Editar' : 'Nova'} Meta</div>
+    <div class="modal-sub">O que você quer alcançar</div>
+    <div class="field">
+      <label>Título</label>
+      <input id="g-title" placeholder="Ex: Vender 30 milhões em 2026" value="${it ? esc(it.title) : ''}">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Atual</label>
+        <input id="g-current" type="number" step="0.01" inputmode="decimal" placeholder="0" value="${it ? (it.current || '') : ''}">
+      </div>
+      <div class="field">
+        <label>Alvo</label>
+        <input id="g-target" type="number" step="0.01" inputmode="decimal" placeholder="100" value="${it ? (it.target || '') : ''}">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Unidade</label>
+        <input id="g-unit" placeholder="vendas / R$ / km" value="${it ? esc(it.unit || '') : ''}">
+      </div>
+      <div class="field">
+        <label>Prazo</label>
+        <input id="g-deadline" type="date" value="${it ? (it.deadline || '') : ''}">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveGoal()">${it ? 'Salvar Edição' : 'Salvar'}</button>
+    </div>
+  `,
+
+  plans: (it) => `
+    <div class="modal-handle"></div>
+    <div class="modal-title">${it ? 'Editar' : 'Novo'} Plano</div>
+    <div class="modal-sub">Projeto com etapas</div>
+    <div class="field">
+      <label>Título</label>
+      <input id="p-title" placeholder="Ex: Lançar campanha de captação" value="${it ? esc(it.title) : ''}">
+    </div>
+    <div class="field">
+      <label>Notas</label>
+      <textarea id="p-notes" placeholder="Visão geral do plano...">${it ? esc(it.notes || '') : ''}</textarea>
+    </div>
+    <div class="field">
+      <label>Etapas (uma por linha)${it ? ' — editar aqui sobrescreve as existentes' : ''}</label>
+      <textarea id="p-steps" rows="5" placeholder="Definir escopo&#10;Validar com clientes&#10;Executar">${it ? (it.steps || []).map(s => esc(s.text)).join('\n') : ''}</textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePlan()">${it ? 'Salvar Edição' : 'Salvar'}</button>
+    </div>
+  `,
+};
+
+function setTxType(t) {
+  txType = t;
+  const inc = document.getElementById('tx-income');
+  const exp = document.getElementById('tx-expense');
+  if (inc) inc.className = t === 'income' ? 'active income' : '';
+  if (exp) exp.className = t === 'expense' ? 'active expense' : '';
+}
+
+// ===== SAVE =====
+function saveFinance() {
+  const desc = val('f-desc');
+  const value = Number(val('f-value'));
+  if (!desc || !value) return toast('Preencha descrição e valor');
+  const payload = { type: txType, desc, value, date: val('f-date') || todayISO(), category: val('f-category') || 'Geral' };
+  if (editingId) {
+    const it = data.finance.find(x => x.id === editingId);
+    if (it) Object.assign(it, payload);
+    toast('Lançamento atualizado');
+  } else {
+    data.finance.push({ id: uid(), ...payload });
+    toast('Lançamento salvo');
+  }
+  save(); closeModal(); render();
+}
+
+function saveAgenda() {
+  const title = val('a-title');
+  if (!title) return toast('Preencha o título');
+  const payload = {
+    title,
+    date: val('a-date') || todayISO(),
+    time: val('a-time'),
+    duration: Number(val('a-duration')) || 60,
+    alarm: val('a-alarm') || '15',
+    location: val('a-location'),
+    notes: val('a-notes'),
+  };
+  let createdId = null;
+  if (editingId) {
+    const it = data.agenda.find(x => x.id === editingId);
+    if (it) Object.assign(it, payload);
+    toast('Compromisso atualizado');
+  } else {
+    createdId = uid();
+    data.agenda.push({ id: createdId, ...payload, done: false });
+    toast('Compromisso salvo · abrindo Calendário');
+  }
+  save(); closeModal(); render();
+  if (createdId) setTimeout(() => addToGoogleCalendar(createdId), 500);
+}
+
+function saveDeal() {
+  const name = val('d-name');
+  if (!name) return toast('Preencha o cliente');
+  const payload = { name, contact: val('d-contact'), property: val('d-property'), value: Number(val('d-value')) || 0, stage: val('d-stage') || 'Lead', notes: val('d-notes') };
+  if (editingId) {
+    const it = data.deals.find(x => x.id === editingId);
+    if (it) Object.assign(it, payload);
+    toast('Negócio atualizado');
+  } else {
+    data.deals.push({ id: uid(), ...payload, createdAt: Date.now() });
+    toast('Negócio adicionado');
+  }
+  save(); closeModal(); render();
+}
+
+function saveGoal() {
+  const title = val('g-title');
+  const target = Number(val('g-target'));
+  if (!title || !target) return toast('Preencha título e alvo');
+  const payload = { title, current: Number(val('g-current')) || 0, target, unit: val('g-unit'), deadline: val('g-deadline') };
+  if (editingId) {
+    const it = data.goals.find(x => x.id === editingId);
+    if (it) Object.assign(it, payload);
+    toast('Meta atualizada');
+  } else {
+    data.goals.push({ id: uid(), ...payload });
+    toast('Meta criada');
+  }
+  save(); closeModal(); render();
+}
+
+function savePlan() {
+  const title = val('p-title');
+  if (!title) return toast('Preencha o título');
+  const newSteps = val('p-steps').split('\n').map(s => s.trim()).filter(Boolean);
+  if (editingId) {
+    const it = data.plans.find(x => x.id === editingId);
+    if (it) {
+      it.title = title;
+      it.notes = val('p-notes');
+      const oldMap = {};
+      (it.steps || []).forEach(s => { oldMap[s.text] = s.done; });
+      it.steps = newSteps.map(text => ({ text, done: oldMap[text] || false }));
+    }
+    toast('Plano atualizado');
+  } else {
+    data.plans.push({ id: uid(), title, notes: val('p-notes'), steps: newSteps.map(text => ({ text, done: false })) });
+    toast('Plano criado');
+  }
+  save(); closeModal(); render();
+}
+
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+// ===== BACKUP =====
+function exportData() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ophir-b7-backup-${todayISO()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  data.meta = data.meta || {};
+  data.meta.lastBackup = Date.now();
+  save();
+  toast('✓ Backup exportado');
+  render();
+}
+
+function importData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,application/json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const r = new FileReader();
+    r.onload = ev => {
+      try {
+        const incoming = JSON.parse(ev.target.result);
+        if (!confirm('Importar substituirá os dados atuais. Continuar?')) return;
+        data = { ...structuredClone(defaultData), ...incoming };
+        save();
+        toast('Dados importados');
+        render();
+      } catch { toast('Arquivo inválido'); }
+    };
+    r.readAsText(file);
+  };
+  input.click();
+}
+
+function resetAll() {
+  data = structuredClone(defaultData);
+  save();
+  toast('Tudo limpo');
+  render();
+}
+
+// ===== SERVICE WORKER =====
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
+// ===== INIT =====
+setView('dashboard');
+</script>
+</body>
+</html>
