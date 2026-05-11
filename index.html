@@ -2,1189 +2,1444 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0a0e1a">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Ophir B7">
+  <title>OPHIR B7</title>
+  <meta name="theme-color" content="#050505">
   <link rel="manifest" href="manifest.json">
-  <title>Ophir B7</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-deep: #060912;
-      --bg-base: #0a0e1a;
-      --bg-card: #111827;
-      --bg-elev: #1a2336;
-      --line: #1f2a40;
-      --line-soft: #15203362;
-      --ink-1: #f5e9c8;
-      --ink-2: #c9d4e8;
-      --ink-3: #6b7993;
-      --ink-mute: #3d4863;
-      --gold: #c9a74a;
-      --gold-bright: #e6c866;
-      --gold-deep: #8a6d20;
-      --blue: #3a6df0;
-      --blue-deep: #1d3a8a;
-      --blue-soft: #5a8aff20;
-      --danger: #d94c5c;
-      --success: #4ea882;
-      --radius: 14px;
-      --radius-sm: 8px;
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      /* Paleta da marca */
+      --bg:#050505;
+      --s1:#0c0c0a;
+      --s2:#111110;
+      --s3:#191916;
+      --s4:#222220;
+      --gold:#C8A050;
+      --gold-l:#E0C070;
+      --gold-ll:#F0D898;
+      --gold-d:rgba(200,160,80,0.10);
+      --gold-b:rgba(200,160,80,0.18);
+      --border:rgba(200,160,80,0.14);
+      --border-h:rgba(200,160,80,0.28);
+      --text:#F5EFE6;
+      --muted:#8A8070;
+      --dim:#403830;
+      --green:#3DAA6C;
+      --red:#C0403C;
+      --blue:#4888CC;
+      --orange:#C87830;
+      --purple:#8060A8;
+      --r:10px;--rs:7px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html, body {
-      background: var(--bg-deep);
-      color: var(--ink-2);
-      font-family: 'Inter Tight', -apple-system, sans-serif;
-      font-size: 15px;
-      line-height: 1.5;
-      min-height: 100vh;
-      overscroll-behavior-y: none;
-    }
-    body {
-      background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(58, 109, 240, 0.12), transparent 60%),
-        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(201, 167, 74, 0.08), transparent 60%),
-        var(--bg-deep);
-      padding-bottom: 90px;
-      padding-top: env(safe-area-inset-top);
-    }
-    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-    input, textarea, select {
-      font-family: inherit;
-      background: var(--bg-elev);
-      border: 1px solid var(--line);
-      color: var(--ink-1);
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      width: 100%;
-      font-size: 15px;
-      outline: none;
-      transition: border-color .2s;
-    }
-    input:focus, textarea:focus, select:focus { border-color: var(--gold); }
-    textarea { resize: vertical; min-height: 70px; }
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter Tight',sans-serif;font-size:14px;line-height:1.5;overflow:hidden}
+    #app{display:flex;flex-direction:column;height:100vh;height:100dvh}
 
-    /* HEADER */
-    .top {
-      padding: 22px 20px 14px;
-      border-bottom: 1px solid var(--line-soft);
-      background: linear-gradient(180deg, rgba(10,14,26,.95), rgba(10,14,26,.7));
-      backdrop-filter: blur(12px);
-      position: sticky; top: 0; z-index: 50;
+    /* ── TOP BAR ── */
+    #topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 24px;height:60px;
+      background:var(--s1);
+      border-bottom:1px solid var(--border);
+      flex-shrink:0;z-index:100;
     }
-    .brand { display: flex; align-items: baseline; gap: 10px; }
-    .brand-mark {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
-      font-size: 28px;
-      letter-spacing: .02em;
-      color: var(--ink-1);
-      line-height: 1;
+    .logo{
+      display:flex;align-items:center;gap:12px;
+      text-decoration:none;
     }
-    .brand-mark .seven {
-      color: var(--gold);
-      font-style: italic;
-      font-weight: 600;
-      position: relative;
-      margin: 0 1px;
+    .logo-mark svg{width:32px;height:38px}
+    .logo-text{
+      display:flex;flex-direction:column;gap:0;
+      line-height:1;
     }
-    .brand-mark .seven::before {
-      content: '';
-      position: absolute;
-      inset: -2px -4px;
-      background: radial-gradient(circle, rgba(201,167,74,.25), transparent 70%);
-      z-index: -1;
+    .logo-name{
+      font-family:'Inter Tight',sans-serif;
+      font-size:15px;font-weight:600;
+      letter-spacing:0.28em;
+      color:var(--text);
     }
-    .brand-tag {
-      font-size: 9px;
-      letter-spacing: .35em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      font-weight: 500;
+    .logo-name em{color:var(--gold);font-style:normal}
+    .logo-tag{
+      font-family:'Inter Tight',sans-serif;
+      font-size:7.5px;font-weight:400;
+      letter-spacing:0.18em;
+      color:var(--muted);
+      text-transform:uppercase;
+      margin-top:3px;
     }
-    .top-actions { display: flex; gap: 8px; margin-top: 14px; }
-    .top-actions button {
-      flex: 1;
-      background: transparent;
-      border: 1px solid var(--line);
-      color: var(--ink-3);
-      padding: 8px;
-      border-radius: var(--radius-sm);
-      font-size: 11px;
-      letter-spacing: .15em;
-      text-transform: uppercase;
+
+    /* Context Toggle */
+    .ctx-toggle{display:flex;background:var(--s2);border:1px solid var(--border);border-radius:4px;padding:3px;gap:2px}
+    .ctx-btn{
+      padding:5px 16px;border-radius:3px;border:none;background:transparent;
+      color:var(--muted);font-family:'Inter Tight',sans-serif;
+      font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+      cursor:pointer;transition:all .2s;
     }
-    .top-actions button:active { background: var(--bg-elev); color: var(--ink-1); }
+    .ctx-btn.active{background:var(--gold);color:#050505}
 
-    /* MAIN */
-    main { padding: 18px 20px; max-width: 720px; margin: 0 auto; }
-    .view-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      font-weight: 400;
-      letter-spacing: -.01em;
-      color: var(--ink-1);
-      margin-bottom: 4px;
-      line-height: 1;
+    /* ── LAYOUT ── */
+    #main{display:flex;flex:1;overflow:hidden}
+
+    /* ── SIDE NAV ── */
+    #sidenav{
+      width:200px;background:var(--s1);
+      border-right:1px solid var(--border);
+      padding:20px 10px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;
     }
-    .view-sub {
-      font-size: 12px;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      margin-bottom: 22px;
+    .nav-item{
+      display:flex;align-items:center;gap:10px;padding:10px 14px;
+      border-radius:var(--rs);border:none;background:transparent;
+      color:var(--muted);font-family:'Inter Tight',sans-serif;
+      font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+      cursor:pointer;text-align:left;width:100%;transition:all .15s;
     }
-    .view-sub::before { content: '— '; color: var(--gold); }
+    .nav-item:hover{color:var(--text);background:var(--s2)}
+    .nav-item.active{color:var(--gold);background:var(--gold-d);border-right:2px solid var(--gold);padding-right:12px}
+    .nav-icon{width:16px;height:16px;flex-shrink:0;opacity:.7}
+    .nav-item.active .nav-icon{opacity:1}
 
-    /* CARDS */
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
-    .stat {
-      background: var(--bg-card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 14px;
-      position: relative;
-      overflow: hidden;
+    /* ── CONTENT ── */
+    #content{flex:1;overflow-y:auto;padding:28px;scroll-behavior:smooth}
+
+    /* ── BOTTOM NAV ── */
+    #bottomnav{display:none;background:var(--s1);border-top:1px solid var(--border);padding:8px 0 env(safe-area-inset-bottom);flex-shrink:0}
+    .bnav-inner{display:flex;justify-content:space-around}
+    .bnav-item{
+      display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px;
+      border:none;background:transparent;color:var(--dim);
+      font-family:'Inter Tight',sans-serif;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+      cursor:pointer;transition:color .15s;
     }
-    .stat::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: .4;
+    .bnav-item.active{color:var(--gold)}
+    .bnav-item svg{width:20px;height:20px}
+
+    @media(max-width:768px){
+      #sidenav{display:none}
+      #bottomnav{display:block}
+      #content{padding:16px}
     }
-    .stat-label { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
-    .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--ink-1); font-weight: 500; line-height: 1.1; }
-    .stat-value.gold { color: var(--gold-bright); }
-    .stat-value.blue { color: #6e9bff; }
-    .stat-value.danger { color: var(--danger); }
-    .stat-meta { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
 
-    /* LIST ITEM */
-    .item { background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; transition: border-color .15s; }
-    .item:active { border-color: var(--gold-deep); }
-    .item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-    .item-title { font-size: 15px; color: var(--ink-1); font-weight: 500; flex: 1; }
-    .item-meta { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
-    .item-actions { display: flex; gap: 6px; margin-top: 10px; }
-    .item-btn { background: var(--bg-elev); border: 1px solid var(--line); padding: 6px 10px; border-radius: 6px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
-    .item-btn.primary { color: var(--gold); border-color: var(--gold-deep); }
-    .item-btn.danger { color: var(--danger); }
-    .empty { text-align: center; padding: 40px 20px; color: var(--ink-mute); font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 18px; }
-
-    /* FAB */
-    .fab {
-      position: fixed; bottom: 100px; right: 20px;
-      width: 56px; height: 56px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--gold-bright), var(--gold-deep));
-      color: #0a0e1a; font-size: 28px; font-weight: 300;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 8px 24px rgba(201,167,74,.35), 0 2px 8px rgba(0,0,0,.5);
-      z-index: 40; line-height: 1;
+    /* ── SECTION HEADER ── */
+    .sh{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:12px}
+    .sh-title{
+      font-family:'Cormorant Garamond',serif;
+      font-size:30px;font-weight:400;letter-spacing:.02em;
+      color:var(--text);line-height:1;
     }
-    .fab:active { transform: scale(.94); }
+    .sh-sub{font-size:11px;color:var(--muted);margin-top:5px;letter-spacing:.06em;text-transform:uppercase}
+    .sh-actions{display:flex;gap:8px;flex-shrink:0;align-items:center}
 
-    /* TAB BAR */
-    .tabs {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(6,9,18,.92);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid var(--line);
-      display: flex;
-      padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
-      z-index: 50;
+    /* ── GRID ── */
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    @media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:500px){.grid-4,.grid-2{grid-template-columns:1fr}}
+
+    /* ── STAT CARDS ── */
+    .stat{
+      background:var(--s1);border:1px solid var(--border);border-radius:var(--r);
+      padding:22px 20px;position:relative;overflow:hidden;
     }
-    .tab { flex: 1; padding: 8px 4px; display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--ink-mute); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; transition: color .15s; }
-    .tab svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
-    .tab.active { color: var(--gold); }
-    .tab.active svg { filter: drop-shadow(0 0 6px rgba(201,167,74,.4)); }
+    .stat::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,var(--ac,var(--gold)) 40%,transparent);
+      opacity:.7;
+    }
+    .stat::after{
+      content:'';position:absolute;top:0;left:0;bottom:0;width:1px;
+      background:linear-gradient(180deg,var(--ac,var(--gold)),transparent);
+      opacity:.4;
+    }
+    .stat-label{
+      font-size:10px;text-transform:uppercase;letter-spacing:.14em;
+      color:var(--muted);margin-bottom:12px;
+    }
+    .stat-val{
+      font-family:'Cormorant Garamond',serif;
+      font-size:32px;font-weight:500;line-height:1;
+    }
+    .stat-val.pos{color:var(--green)}
+    .stat-val.neg{color:var(--red)}
+    .stat-sub{font-size:10px;color:var(--dim);margin-top:8px;letter-spacing:.04em}
 
-    /* MODAL */
-    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(8px); z-index: 100; display: none; align-items: flex-end; justify-content: center; }
-    .modal-bg.open { display: flex; animation: fadeIn .2s; }
-    .modal { background: var(--bg-card); border-top: 1px solid var(--gold-deep); border-radius: 20px 20px 0 0; width: 100%; max-width: 720px; max-height: 90vh; overflow-y: auto; padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); animation: slideUp .25s cubic-bezier(.2,.9,.3,1); }
-    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-    @keyframes slideUp { from { transform: translateY(40px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
-    .modal-handle { width: 40px; height: 4px; background: var(--ink-mute); border-radius: 4px; margin: 0 auto 16px; }
-    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--ink-1); margin-bottom: 4px; }
-    .modal-sub { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; }
-    .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-    .btn { flex: 1; padding: 13px; border-radius: var(--radius-sm); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; }
-    .btn-primary { background: linear-gradient(135deg, var(--gold-bright), var(--gold-deep)); color: #0a0e1a; }
-    .btn-ghost { background: transparent; color: var(--ink-3); border: 1px solid var(--line); }
+    /* ── CARD ── */
+    .card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:22px}
 
-    /* FUNIL */
-    .funnel-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
-    .funnel-tabs::-webkit-scrollbar { display: none; }
-    .funnel-tab { padding: 8px 14px; border-radius: 999px; background: var(--bg-card); border: 1px solid var(--line); color: var(--ink-3); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
-    .funnel-tab.active { background: linear-gradient(135deg, var(--blue-deep), var(--blue)); color: var(--ink-1); border-color: var(--blue); }
-    .funnel-tab .count { margin-left: 6px; color: var(--gold-bright); font-weight: 600; }
+    /* ── BUTTONS ── */
+    .btn{
+      display:inline-flex;align-items:center;gap:6px;padding:8px 18px;
+      border-radius:var(--rs);border:none;
+      font-family:'Inter Tight',sans-serif;font-size:11px;font-weight:600;
+      letter-spacing:.1em;text-transform:uppercase;
+      cursor:pointer;transition:all .15s;white-space:nowrap;
+    }
+    .btn-primary{background:var(--gold);color:#050505}
+    .btn-primary:hover{background:var(--gold-l)}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+    .btn-danger{background:transparent;border:1px solid rgba(192,64,60,.25);color:var(--red)}
+    .btn-danger:hover{background:rgba(192,64,60,.08)}
+    .btn-sm{padding:5px 12px;font-size:10px;border-radius:5px}
+    .btn-adv{
+      background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 100%);
+      color:#050505;font-size:10px;padding:5px 12px;border-radius:5px;
+      border:none;font-family:'Inter Tight',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+      cursor:pointer;transition:all .15s;
+    }
+    .btn-adv:hover{filter:brightness(1.1)}
 
-    /* TX TYPE TOGGLE */
-    .toggle { display: flex; background: var(--bg-elev); border-radius: var(--radius-sm); padding: 3px; border: 1px solid var(--line); }
-    .toggle button { flex: 1; padding: 9px; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-3); border-radius: 6px; }
-    .toggle button.active { background: var(--bg-card); color: var(--ink-1); }
-    .toggle button.active.income { color: var(--success); }
-    .toggle button.active.expense { color: var(--danger); }
+    /* ── FORMS ── */
+    .fg{margin-bottom:14px}
+    .fl{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px}
+    .fc{
+      width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);
+      padding:9px 13px;color:var(--text);font-family:'Inter Tight',sans-serif;font-size:13px;
+      transition:border-color .15s;
+    }
+    .fc:focus{outline:none;border-color:var(--gold)}
+    select.fc{cursor:pointer}
+    textarea.fc{resize:vertical;min-height:76px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:480px){.form-row{grid-template-columns:1fr}}
 
-    .badge { display: inline-block; font-size: 9px; letter-spacing: .2em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; font-weight: 600; }
-    .badge-income { background: rgba(78,168,130,.15); color: var(--success); }
-    .badge-expense { background: rgba(217,76,92,.15); color: var(--danger); }
-    .badge-stage { background: var(--blue-soft); color: #6e9bff; border: 1px solid var(--blue-deep); }
+    /* ── MODAL ── */
+    .overlay{
+      position:fixed;inset:0;background:rgba(5,5,5,.9);backdrop-filter:blur(6px);
+      z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;
+      animation:fi .2s;
+    }
+    @keyframes fi{from{opacity:0}to{opacity:1}}
+    @keyframes su{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .modal{
+      background:var(--s1);border:1px solid var(--border);border-radius:12px;
+      padding:30px;width:100%;max-width:480px;animation:su .2s;
+      max-height:90vh;overflow-y:auto;
+    }
+    .modal-title{
+      font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;
+      margin-bottom:22px;color:var(--gold);letter-spacing:.04em;
+    }
+    .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
 
-    .progress-bar { width: 100%; height: 6px; background: var(--bg-elev); border-radius: 3px; overflow: hidden; margin-top: 8px; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--gold)); transition: width .4s; }
+    /* ── ITEMS ── */
+    .item-list{display:flex;flex-direction:column;gap:7px}
+    .irow{
+      display:flex;align-items:center;gap:12px;padding:11px 14px;
+      background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);
+      transition:border-color .15s;
+    }
+    .irow:hover{border-color:var(--border-h)}
+    .iicon{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+    .iinfo{flex:1;min-width:0}
+    .ititle{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+    .isub{font-size:11px;color:var(--muted);margin-top:2px}
+    .iact{display:flex;gap:6px;flex-shrink:0}
 
-    .check { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--ink-mute); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
-    .check.done { background: var(--gold); border-color: var(--gold); color: #0a0e1a; }
-    .check.done::after { content: '✓'; font-weight: 700; font-size: 14px; }
+    /* ── BADGES ── */
+    .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+    .bg-gold{background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b)}
+    .bg-green{background:rgba(61,170,108,.1);color:var(--green);border:1px solid rgba(61,170,108,.2)}
+    .bg-red{background:rgba(192,64,60,.1);color:var(--red);border:1px solid rgba(192,64,60,.2)}
+    .bg-blue{background:rgba(72,136,204,.1);color:var(--blue);border:1px solid rgba(72,136,204,.2)}
+    .bg-orange{background:rgba(200,120,48,.1);color:var(--orange);border:1px solid rgba(200,120,48,.2)}
+    .bg-purple{background:rgba(128,96,168,.1);color:var(--purple);border:1px solid rgba(128,96,168,.2)}
+    .bg-muted{background:var(--s3);color:var(--muted);border:1px solid var(--border)}
 
-    .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--gold); color: var(--ink-1); padding: 10px 18px; border-radius: 999px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity .25s; pointer-events: none; }
-    .toast.show { opacity: 1; }
+    /* ── PROGRESS ── */
+    .prog{height:3px;background:var(--s4);border-radius:2px;overflow:hidden;margin-top:10px}
+    .prog-bar{height:100%;border-radius:2px;transition:width .4s ease}
 
-    .verse { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--ink-3); text-align: center; padding: 16px; margin: 16px 0 22px; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); line-height: 1.6; }
-    .verse cite { display: block; font-size: 10px; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); font-style: normal; margin-top: 6px; }
+    /* ── FILTER BAR ── */
+    .fbar{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+    .fbtn{
+      padding:5px 12px;border-radius:3px;border:1px solid var(--border);background:transparent;
+      color:var(--muted);font-family:'Inter Tight',sans-serif;font-size:10px;font-weight:600;
+      letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s;
+    }
+    .fbtn.active{background:var(--gold-d);border-color:var(--gold);color:var(--gold)}
+    .fdiv{width:1px;height:22px;background:var(--border)}
 
-    .backup-banner { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius); margin-bottom: 16px; cursor: pointer; border: 1px solid; transition: transform .15s; }
-    .backup-banner:active { transform: scale(.98); }
-    .backup-banner.warn { background: linear-gradient(135deg, rgba(217,76,92,.12), rgba(217,76,92,.04)); border-color: rgba(217,76,92,.4); }
-    .backup-banner.info { background: linear-gradient(135deg, rgba(201,167,74,.1), rgba(201,167,74,.03)); border-color: rgba(201,167,74,.3); }
-    .backup-icon { font-size: 18px; flex-shrink: 0; }
-    .backup-msg { flex: 1; font-size: 12px; color: var(--ink-1); line-height: 1.4; }
-    .backup-cta { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-bright); font-weight: 600; flex-shrink: 0; }
+    /* ── FUNIL ── */
+    .funil-board{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;align-items:flex-start}
+    .funil-col{min-width:218px;flex-shrink:0}
+    .fcol-hd{
+      display:flex;align-items:center;gap:8px;padding:10px 12px;
+      border-radius:var(--rs);margin-bottom:8px;
+    }
+    .fcol-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+    .fcol-cnt{font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.07);font-weight:600}
+    .deal{
+      background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);
+      padding:14px;margin-bottom:7px;transition:border-color .15s,transform .12s;
+    }
+    .deal:hover{border-color:var(--border-h);transform:translateY(-1px)}
+    .deal-t{font-size:13px;font-weight:500;margin-bottom:3px;color:var(--text)}
+    .deal-c{font-size:11px;color:var(--muted);margin-bottom:8px}
+    .deal-v{
+      font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;
+      color:var(--gold);margin-bottom:10px;letter-spacing:.02em;
+    }
+    .deal-act{display:flex;gap:6px;flex-wrap:wrap}
+
+    /* ── AGENDA ── */
+    .cal-list{display:flex;flex-direction:column;gap:7px}
+    .cal-day{
+      font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim);
+      padding:8px 0 4px;border-bottom:1px solid var(--border);margin-top:10px;
+    }
+    .cal-ev{
+      display:flex;align-items:flex-start;gap:12px;padding:10px 14px;
+      background:var(--s2);border-radius:var(--rs);
+      border-left:2px solid var(--gold);
+    }
+    .cal-ev.google{border-left-color:var(--blue)}
+    .cal-ev.pessoal{border-left-color:var(--purple)}
+    .cal-time{font-size:12px;color:var(--muted);min-width:40px;flex-shrink:0;margin-top:2px}
+    .cal-t{font-size:13px;font-weight:500;color:var(--text)}
+    .cal-d{font-size:11px;color:var(--muted);margin-top:2px}
+
+    /* ── GCAL BAR ── */
+    .gcal-bar{
+      display:flex;align-items:center;gap:10px;padding:12px 14px;
+      background:var(--s2);border:1px solid var(--border);border-radius:var(--rs);margin-bottom:16px;
+    }
+    .gcal-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);flex-shrink:0}
+    .gcal-dot.on{background:var(--green)}
+    .gcal-txt{flex:1;font-size:11px;color:var(--muted);letter-spacing:.04em}
+
+    /* ── EMPTY ── */
+    .empty{text-align:center;padding:52px 20px}
+    .empty-ico{font-size:32px;margin-bottom:12px;opacity:.4}
+    .empty-txt{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+    /* ── DIVIDER ── */
+    .gold-line{height:1px;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold-l) 50%,var(--gold) 70%,transparent);opacity:.3;margin:20px 0}
+
+    /* ── TOAST ── */
+    #toast{
+      position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(14px);
+      background:var(--s3);border:1px solid var(--gold-b);border-radius:3px;
+      padding:9px 20px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+      color:var(--text);z-index:9999;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none;
+    }
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* ── CHART ── */
+    .chart-wrap{position:relative;width:100%}
+    .chart-svg{width:100%;overflow:visible}
+    .chart-bar{transition:opacity .15s}
+    .chart-bar:hover{opacity:.8}
+    .chart-tooltip{
+      position:absolute;background:var(--s3);border:1px solid var(--gold-b);border-radius:4px;
+      padding:6px 10px;font-size:11px;color:var(--text);pointer-events:none;white-space:nowrap;
+      letter-spacing:.04em;z-index:10;display:none;
+    }
+
+    /* ── PAGES ── */
+    .page{display:none}
+    .page.active{display:block}
+
+    /* ── UTILS ── */
+    .flex{display:flex}.flexb{display:flex;align-items:center;justify-content:space-between}
+    .gap8{gap:8px}.gap12{gap:12px}
+    .mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mb16{margin-bottom:16px}
+
+    ::-webkit-scrollbar{width:3px;height:3px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--gold-b)}
   </style>
 </head>
 <body>
+<div id="app">
 
-<header class="top">
-  <div class="brand">
-    <span class="brand-mark">Ophir B<span class="seven">7</span></span>
-    <span class="brand-tag">Business · Lucas</span>
+  <!-- TOP BAR -->
+  <header id="topbar">
+    <div class="logo">
+      <div class="logo-mark">
+        <!-- Símbolo O7 da marca Ophir B7 -->
+        <svg viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="36" y2="44" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#F0D898"/>
+              <stop offset="45%" stop-color="#C8A050"/>
+              <stop offset="100%" stop-color="#907030"/>
+            </linearGradient>
+          </defs>
+          <!-- Arco do O (abertura no canto inferior direito) -->
+          <path d="M18 2 C9.16 2 2 9.16 2 18 C2 24.62 5.88 30.32 11.6 33.2" stroke="url(#lg)" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+          <!-- Linha horizontal do 7 -->
+          <path d="M11 8 L28 8" stroke="url(#lg)" stroke-width="2.8" stroke-linecap="round"/>
+          <!-- Haste diagonal do 7 descendo até baixo -->
+          <path d="M28 8 L16 42" stroke="url(#lg)" stroke-width="2.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="logo-name">OPHIR <em>B7</em></div>
+        <div class="logo-tag">Clareza · Excelência</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="ctx-toggle">
+        <button class="ctx-btn active" onclick="setCtx('profissional')">Profissional</button>
+        <button class="ctx-btn" onclick="setCtx('pessoal')">Pessoal</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="exportData()" title="Exportar dados">
+        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Backup
+      </button>
+      <label class="btn btn-ghost btn-sm" style="cursor:pointer" title="Importar dados">
+        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 5 17 10"/><line x1="12" y1="5" x2="12" y2="17"/></svg>
+        Importar
+        <input type="file" accept=".json" style="display:none" onchange="importData(event)">
+      </label>
+    </div>
+  </header>
+
+  <div id="main">
+    <!-- SIDE NAV -->
+    <nav id="sidenav">
+      <button class="nav-item active" onclick="go('painel')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Painel
+      </button>
+      <button class="nav-item" onclick="go('financas')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Finanças
+      </button>
+      <button class="nav-item" onclick="go('agenda')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Agenda
+      </button>
+      <button class="nav-item" onclick="go('funil')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+        Funil
+      </button>
+      <button class="nav-item" onclick="go('metas')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Metas
+      </button>
+      <button class="nav-item" onclick="go('planos')">
+        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6M9 12l2 2 4-4"/></svg>
+        Planos
+      </button>
+
+      <!-- Nav bottom brand mark -->
+      <div style="margin-top:auto;padding:16px 14px 4px;border-top:1px solid var(--border)">
+        <div style="font-size:9px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;line-height:1.6">
+          Clareza para investir.<br>Excelência para multiplicar.
+        </div>
+      </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <div id="content">
+
+      <!-- PAINEL -->
+      <div id="page-painel" class="page active">
+        <div class="sh">
+          <div>
+            <div class="sh-title">Painel</div>
+            <div class="sh-sub" id="painel-sub">—</div>
+          </div>
+        </div>
+        <div class="grid-4">
+          <div class="stat" style="--ac:var(--green)">
+            <div class="stat-label">Entradas</div>
+            <div class="stat-val pos" id="s-ent">R$ 0</div>
+            <div class="stat-sub">mês atual</div>
+          </div>
+          <div class="stat" style="--ac:var(--red)">
+            <div class="stat-label">Saídas</div>
+            <div class="stat-val neg" id="s-sai">R$ 0</div>
+            <div class="stat-sub">mês atual</div>
+          </div>
+          <div class="stat" style="--ac:var(--gold)">
+            <div class="stat-label">Líquido</div>
+            <div class="stat-val" id="s-liq">R$ 0</div>
+            <div class="stat-sub">mês atual</div>
+          </div>
+          <div class="stat" style="--ac:var(--blue)">
+            <div class="stat-label">Pipeline Ativo</div>
+            <div class="stat-val" id="s-pip">R$ 0</div>
+            <div class="stat-sub" id="s-pip-c">0 negócios em aberto</div>
+          </div>
+        </div>
+        <!-- Gráfico de tendência -->
+        <div class="card mt20">
+          <div class="flexb mb16">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Tendência — Últimos 6 Meses</span>
+            <div style="display:flex;gap:16px;align-items:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase">
+              <span style="display:flex;align-items:center;gap:5px;color:var(--green)"><span style="width:8px;height:8px;border-radius:2px;background:var(--green);display:inline-block"></span>Entradas</span>
+              <span style="display:flex;align-items:center;gap:5px;color:var(--red)"><span style="width:8px;height:8px;border-radius:2px;background:var(--red);display:inline-block"></span>Saídas</span>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <div class="chart-tooltip" id="chart-tip"></div>
+            <svg id="chart-svg" class="chart-svg" height="140"></svg>
+          </div>
+        </div>
+
+        <div class="grid-2 mt20">
+          <div class="card">
+            <div class="flexb mb16">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Últimas Transações</span>
+              <button class="btn btn-ghost btn-sm" onclick="go('financas')">Ver todas</button>
+            </div>
+            <div id="p-txs" class="item-list"></div>
+          </div>
+          <div class="card">
+            <div class="flexb mb16">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Próximos Eventos</span>
+              <button class="btn btn-ghost btn-sm" onclick="go('agenda')">Ver agenda</button>
+            </div>
+            <div id="p-evs" class="item-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINANÇAS -->
+      <div id="page-financas" class="page">
+        <div class="sh">
+          <div>
+            <div class="sh-title">Finanças</div>
+            <div class="sh-sub">Entradas e saídas</div>
+          </div>
+          <button class="btn btn-primary" onclick="openTxModal()">+ Adicionar</button>
+        </div>
+        <div class="fbar">
+          <button class="fbtn active" data-fc="todos" onclick="fFin(this,'c')">Todos</button>
+          <button class="fbtn" data-fc="profissional" onclick="fFin(this,'c')">Profissional</button>
+          <button class="fbtn" data-fc="pessoal" onclick="fFin(this,'c')">Pessoal</button>
+          <div class="fdiv"></div>
+          <button class="fbtn active" data-ft="todos" onclick="fFin(this,'t')">Todos</button>
+          <button class="fbtn" data-ft="entrada" onclick="fFin(this,'t')">Entradas</button>
+          <button class="fbtn" data-ft="saida" onclick="fFin(this,'t')">Saídas</button>
+        </div>
+        <div id="fin-list" class="item-list"></div>
+      </div>
+
+      <!-- AGENDA -->
+      <div id="page-agenda" class="page">
+        <div class="sh">
+          <div>
+            <div class="sh-title">Agenda</div>
+            <div class="sh-sub">Eventos e compromissos</div>
+          </div>
+          <div class="sh-actions">
+            <button class="btn btn-ghost btn-sm" onclick="gcalSync()">
+              <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+              Sincronizar
+            </button>
+            <button class="btn btn-primary" onclick="openEvModal()">+ Evento</button>
+          </div>
+        </div>
+        <div class="gcal-bar">
+          <div class="gcal-dot" id="gcal-dot"></div>
+          <div class="gcal-txt" id="gcal-txt">Não conectado ao Google Calendar</div>
+          <button class="btn btn-ghost btn-sm" id="gcal-disc" style="display:none" onclick="gcalDisc()">Desconectar</button>
+        </div>
+        <div class="fbar">
+          <button class="fbtn active" data-ac="todos" onclick="fAg(this)">Todos</button>
+          <button class="fbtn" data-ac="profissional" onclick="fAg(this)">Profissional</button>
+          <button class="fbtn" data-ac="pessoal" onclick="fAg(this)">Pessoal</button>
+          <button class="fbtn" data-ac="google" onclick="fAg(this)">Google Calendar</button>
+        </div>
+        <div id="agenda-list" class="cal-list"></div>
+      </div>
+
+      <!-- FUNIL -->
+      <div id="page-funil" class="page">
+        <div class="sh">
+          <div>
+            <div class="sh-title">Funil de Vendas</div>
+            <div class="sh-sub">Pipeline de negócios</div>
+          </div>
+          <button class="btn btn-primary" onclick="openDealModal()">+ Negócio</button>
+        </div>
+        <div class="funil-board" id="funil-board"></div>
+      </div>
+
+      <!-- METAS -->
+      <div id="page-metas" class="page">
+        <div class="sh">
+          <div>
+            <div class="sh-title">Metas</div>
+            <div class="sh-sub">Objetivos e progresso</div>
+          </div>
+          <button class="btn btn-primary" onclick="openMetaModal()">+ Meta</button>
+        </div>
+        <div class="fbar">
+          <button class="fbtn active" data-mc="todos" onclick="fMeta(this)">Todas</button>
+          <button class="fbtn" data-mc="profissional" onclick="fMeta(this)">Profissional</button>
+          <button class="fbtn" data-mc="pessoal" onclick="fMeta(this)">Pessoal</button>
+        </div>
+        <div id="metas-list" class="grid-2"></div>
+      </div>
+
+      <!-- PLANOS -->
+      <div id="page-planos" class="page">
+        <div class="sh">
+          <div>
+            <div class="sh-title">Planos</div>
+            <div class="sh-sub">Tarefas e projetos</div>
+          </div>
+          <button class="btn btn-primary" onclick="openPlanoModal()">+ Plano</button>
+        </div>
+        <div class="fbar">
+          <button class="fbtn active" data-pc="todos" onclick="fPlano(this,'c')">Todos</button>
+          <button class="fbtn" data-pc="profissional" onclick="fPlano(this,'c')">Profissional</button>
+          <button class="fbtn" data-pc="pessoal" onclick="fPlano(this,'c')">Pessoal</button>
+          <div class="fdiv"></div>
+          <button class="fbtn active" data-ps="todos" onclick="fPlano(this,'s')">Todos</button>
+          <button class="fbtn" data-ps="pendente" onclick="fPlano(this,'s')">Pendentes</button>
+          <button class="fbtn" data-ps="em_progresso" onclick="fPlano(this,'s')">Em Progresso</button>
+          <button class="fbtn" data-ps="concluido" onclick="fPlano(this,'s')">Concluídos</button>
+        </div>
+        <div id="planos-list" class="item-list"></div>
+      </div>
+
+    </div>
   </div>
-  <div class="top-actions">
-    <button onclick="exportData()">↓ Exportar</button>
-    <button onclick="importData()">↑ Importar</button>
-    <button onclick="if(confirm('Apagar TUDO? Faça backup antes.')) resetAll()">⌫ Limpar</button>
-  </div>
-</header>
 
-<main id="main"></main>
+  <!-- BOTTOM NAV -->
+  <nav id="bottomnav">
+    <div class="bnav-inner">
+      <button class="bnav-item active" onclick="go('painel')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Painel
+      </button>
+      <button class="bnav-item" onclick="go('financas')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Finanças
+      </button>
+      <button class="bnav-item" onclick="go('agenda')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Agenda
+      </button>
+      <button class="bnav-item" onclick="go('funil')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+        Funil
+      </button>
+      <button class="bnav-item" onclick="go('metas')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Metas
+      </button>
+      <button class="bnav-item" onclick="go('planos')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6M9 12l2 2 4-4"/></svg>
+        Planos
+      </button>
+    </div>
+  </nav>
 
-<button class="fab" id="fab" onclick="openModal()">+</button>
-
-<nav class="tabs">
-  <button class="tab" data-view="dashboard" onclick="setView('dashboard')">
-    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-    Painel
-  </button>
-  <button class="tab" data-view="finance" onclick="setView('finance')">
-    <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-    Finança
-  </button>
-  <button class="tab" data-view="agenda" onclick="setView('agenda')">
-    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-    Agenda
-  </button>
-  <button class="tab" data-view="funnel" onclick="setView('funnel')">
-    <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 9v6l-4 2v-8z"/></svg>
-    Funil
-  </button>
-  <button class="tab" data-view="goals" onclick="setView('goals')">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-    Metas
-  </button>
-  <button class="tab" data-view="plans" onclick="setView('plans')">
-    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-    Planos
-  </button>
-</nav>
-
-<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modal-content"></div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- TRANSAÇÃO -->
+<div class="overlay" id="m-tx" style="display:none" onclick="omo(event,'m-tx')">
+  <div class="modal">
+    <div class="modal-title" id="m-tx-title">Nova Transação</div>
+    <div class="fg">
+      <label class="fl">Tipo</label>
+      <div class="flex gap8">
+        <button class="btn btn-ghost" id="btn-ent" style="flex:1" onclick="setTxT('entrada')">↑ Entrada</button>
+        <button class="btn btn-ghost" id="btn-sai" style="flex:1" onclick="setTxT('saida')">↓ Saída</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Valor (R$)</label>
+        <input type="number" id="tx-val" class="fc" placeholder="0,00" min="0" step="0.01">
+      </div>
+      <div class="fg">
+        <label class="fl">Data</label>
+        <input type="date" id="tx-dt" class="fc">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Descrição</label>
+      <input type="text" id="tx-desc" class="fc" placeholder="Ex: Comissão apartamento...">
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Categoria</label>
+        <select id="tx-cat" class="fc">
+          <option value="comissao">Comissão</option>
+          <option value="aluguel">Aluguel</option>
+          <option value="marketing">Marketing</option>
+          <option value="transporte">Transporte</option>
+          <option value="alimentacao">Alimentação</option>
+          <option value="saude">Saúde</option>
+          <option value="educacao">Educação</option>
+          <option value="lazer">Lazer</option>
+          <option value="outros">Outros</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Contexto</label>
+        <select id="tx-ctx" class="fc">
+          <option value="profissional">Profissional</option>
+          <option value="pessoal">Pessoal</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cm('m-tx')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveTx()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EVENTO -->
+<div class="overlay" id="m-ev" style="display:none" onclick="omo(event,'m-ev')">
+  <div class="modal">
+    <div class="modal-title">Novo Evento</div>
+    <div class="fg">
+      <label class="fl">Título</label>
+      <input type="text" id="ev-title" class="fc" placeholder="Ex: Visita ao imóvel...">
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Data</label>
+        <input type="date" id="ev-dt" class="fc">
+      </div>
+      <div class="fg">
+        <label class="fl">Horário</label>
+        <input type="time" id="ev-time" class="fc">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Descrição</label>
+      <textarea id="ev-desc" class="fc" placeholder="Detalhes..."></textarea>
+    </div>
+    <div class="fg">
+      <label class="fl">Contexto</label>
+      <select id="ev-ctx" class="fc">
+        <option value="profissional">Profissional</option>
+        <option value="pessoal">Pessoal</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cm('m-ev')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEv()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEGÓCIO -->
+<div class="overlay" id="m-deal" style="display:none" onclick="omo(event,'m-deal')">
+  <div class="modal">
+    <div class="modal-title">Novo Negócio</div>
+    <div class="fg">
+      <label class="fl">Título do Negócio</label>
+      <input type="text" id="dl-title" class="fc" placeholder="Ex: Apto 3 quartos Moema...">
+    </div>
+    <div class="fg">
+      <label class="fl">Cliente</label>
+      <input type="text" id="dl-client" class="fc" placeholder="Nome do cliente...">
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Valor (R$)</label>
+        <input type="number" id="dl-val" class="fc" placeholder="0,00" min="0">
+      </div>
+      <div class="fg">
+        <label class="fl">Etapa Inicial</label>
+        <select id="dl-stage" class="fc">
+          <option value="lead">Lead</option>
+          <option value="visita">Visita</option>
+          <option value="proposta">Proposta</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Notas</label>
+      <textarea id="dl-notes" class="fc" placeholder="Observações..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cm('m-deal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveDeal()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- META -->
+<div class="overlay" id="m-meta" style="display:none" onclick="omo(event,'m-meta')">
+  <div class="modal">
+    <div class="modal-title">Nova Meta</div>
+    <div class="fg">
+      <label class="fl">Título</label>
+      <input type="text" id="mt-title" class="fc" placeholder="Ex: Fechar 5 negócios no mês...">
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Meta</label>
+        <input type="number" id="mt-target" class="fc" placeholder="100">
+      </div>
+      <div class="fg">
+        <label class="fl">Atual</label>
+        <input type="number" id="mt-current" class="fc" placeholder="0">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Unidade</label>
+        <input type="text" id="mt-unit" class="fc" placeholder="negócios, R$, km...">
+      </div>
+      <div class="fg">
+        <label class="fl">Prazo</label>
+        <input type="date" id="mt-dl" class="fc">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Contexto</label>
+      <select id="mt-ctx" class="fc">
+        <option value="profissional">Profissional</option>
+        <option value="pessoal">Pessoal</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cm('m-meta')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveMeta()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PLANO -->
+<div class="overlay" id="m-plano" style="display:none" onclick="omo(event,'m-plano')">
+  <div class="modal">
+    <div class="modal-title">Novo Plano</div>
+    <div class="fg">
+      <label class="fl">Título</label>
+      <input type="text" id="pl-title" class="fc" placeholder="Ex: Criar apresentação...">
+    </div>
+    <div class="fg">
+      <label class="fl">Descrição</label>
+      <textarea id="pl-desc" class="fc" placeholder="Detalhes do plano..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Prioridade</label>
+        <select id="pl-prio" class="fc">
+          <option value="alta">Alta</option>
+          <option value="media">Média</option>
+          <option value="baixa">Baixa</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Prazo</label>
+        <input type="date" id="pl-due" class="fc">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Contexto</label>
+      <select id="pl-ctx" class="fc">
+        <option value="profissional">Profissional</option>
+        <option value="pessoal">Pessoal</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cm('m-plano')">Cancelar</button>
+      <button class="btn btn-primary" onclick="savePlano()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
 
 <script>
-// ===== STATE =====
-const STORAGE_KEY = 'ophir_b7_v1';
-const STAGES = ['Lead', 'Visita', 'Proposta', 'Fechado', 'Perdido'];
+// ═══════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════
+const GCAL_CLIENT_ID = 'SEU_GOOGLE_CLIENT_ID_AQUI';
+const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.readonly';
+const SK = 'ophir_b7_v2';
 
-const defaultData = {
-  finance: [],
-  agenda: [],
-  deals: [],
-  goals: [],
-  plans: [],
-  meta: { lastBackup: null, lastUsed: null }
-};
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let S = { ctx:'profissional', transactions:[], deals:[], events:[], goals:[], plans:[], gcalToken:null, gcalAt:null };
+let F = { fc:'todos', ft:'todos', ag:'todos', mc:'todos', pc:'todos', ps:'todos' };
+let curPage='painel', editTx=null, txType='entrada', gcalClient=null;
 
-let data = load();
-let currentView = 'dashboard';
-let modalCtx = null;
-let funnelStage = 'Lead';
-let txType = 'income';
-let editingId = null;
+// ═══════════════════════════════════════
+// PERSISTENCE
+// ═══════════════════════════════════════
+function save(){ localStorage.setItem(SK, JSON.stringify(S)); }
+function load(){ try{ const r=localStorage.getItem(SK); if(r) S={...S,...JSON.parse(r)}; }catch(e){} }
 
-function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return structuredClone(defaultData);
-    const parsed = JSON.parse(raw);
-    const merged = { ...structuredClone(defaultData), ...parsed };
-    if (!merged.meta) merged.meta = { lastBackup: null, lastUsed: null };
-    return merged;
-  } catch { return structuredClone(defaultData); }
+// ═══════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2); }
+function fmt(n){ return 'R$ '+Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtD(d){ if(!d) return ''; return new Date(d+'T12:00:00').toLocaleDateString('pt-BR'); }
+function today(){ return new Date().toISOString().slice(0,10); }
+function toast(msg,ms=2800){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),ms);
 }
 
-function save() {
-  data.meta = data.meta || { lastBackup: null, lastUsed: null };
-  data.meta.lastUsed = Date.now();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+const PAGES=['painel','financas','agenda','funil','metas','planos'];
+function go(page){
+  curPage=page;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach((b,i)=>b.classList.toggle('active',PAGES[i]===page));
+  document.querySelectorAll('.bnav-item').forEach((b,i)=>b.classList.toggle('active',PAGES[i]===page));
+  render(page);
+}
+function render(p){
+  ({painel:renderPainel,financas:renderFin,agenda:renderAg,funil:renderFunil,metas:renderMetas,planos:renderPlanos})[p]?.();
 }
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-function fmt(v) { return 'R$ ' + (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-function fmtDate(s) { if (!s) return ''; const d = new Date(s + 'T00:00'); return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }); }
-function todayISO() { return new Date().toISOString().slice(0, 10); }
-
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1800);
+// ═══════════════════════════════════════
+// CONTEXT
+// ═══════════════════════════════════════
+function setCtx(c){
+  S.ctx=c; save();
+  document.querySelectorAll('.ctx-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().trim()===c));
+  render(curPage);
 }
 
-// ===== ROUTER =====
-function setView(v) {
-  currentView = v;
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
-  render();
-}
+// ═══════════════════════════════════════
+// PAINEL
+// ═══════════════════════════════════════
+function renderPainel(){
+  const now=new Date(), m=now.getMonth(), y=now.getFullYear();
+  const mn=now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+  document.getElementById('painel-sub').textContent=(S.ctx==='profissional'?'Profissional':'Pessoal')+' — '+mn;
 
-function render() {
-  const main = document.getElementById('main');
-  const fab = document.getElementById('fab');
-  fab.style.display = currentView === 'dashboard' ? 'none' : 'flex';
-  main.innerHTML = views[currentView]();
-}
+  const mTx=S.transactions.filter(t=>{ const d=new Date(t.date); return d.getMonth()===m&&d.getFullYear()===y&&t.context===S.ctx; });
+  const ent=mTx.filter(t=>t.type==='entrada').reduce((s,t)=>s+t.value,0);
+  const sai=mTx.filter(t=>t.type==='saida').reduce((s,t)=>s+t.value,0);
+  const liq=ent-sai;
+  document.getElementById('s-ent').textContent=fmt(ent);
+  document.getElementById('s-sai').textContent=fmt(sai);
+  const lEl=document.getElementById('s-liq');
+  lEl.textContent=fmt(liq); lEl.className='stat-val '+(liq>=0?'pos':'neg');
 
-// ===== VIEWS =====
-const views = {
-  dashboard() {
-    const month = new Date().toISOString().slice(0, 7);
-    const monthTx = data.finance.filter(t => t.date && t.date.startsWith(month));
-    const income = monthTx.filter(t => t.type === 'income').reduce((s, t) => s + Number(t.value), 0);
-    const expense = monthTx.filter(t => t.type === 'expense').reduce((s, t) => s + Number(t.value), 0);
-    const liquid = income - expense;
-    const activeDeals = data.deals.filter(d => !['Fechado', 'Perdido'].includes(d.stage));
-    const pipelineValue = activeDeals.reduce((s, d) => s + Number(d.value || 0), 0);
-    const closed = data.deals.filter(d => d.stage === 'Fechado').length;
-    const today = todayISO();
-    const upcoming = data.agenda.filter(a => !a.done && a.date >= today).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 3);
-    const verses = [
-      ['Os planos bem elaborados levam à fartura; mas o apressado sempre acaba na miséria.', 'Provérbios 21:5'],
-      ['Tudo o que as tuas mãos tiverem que fazer, faze-o conforme as tuas forças.', 'Eclesiastes 9:10'],
-      ['Antes do dia raiar, eu clamarei por socorro; minha esperança está nas tuas palavras.', 'Salmos 119:147'],
-      ['Eis que vos faço uma coisa nova, agora sairá à luz; porventura não a percebeis?', 'Isaías 43:19'],
-      ['Os que esperam no Senhor renovarão as suas forças.', 'Isaías 40:31'],
-    ];
-    const v = verses[new Date().getDate() % verses.length];
+  const active=S.deals.filter(d=>!['fechado','perdido'].includes(d.stage));
+  document.getElementById('s-pip').textContent=fmt(active.reduce((s,d)=>s+d.value,0));
+  document.getElementById('s-pip-c').textContent=`${active.length} negócio${active.length!==1?'s':''} em aberto`;
 
-    return `
-      <h1 class="view-title">Painel</h1>
-      <p class="view-sub">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-      ${backupBanner()}
-      <div class="stat-grid">
-        <div class="stat">
-          <div class="stat-label">Entrada do Mês</div>
-          <div class="stat-value gold">${fmt(income)}</div>
-          <div class="stat-meta">${monthTx.filter(t => t.type === 'income').length} comissões</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Saída do Mês</div>
-          <div class="stat-value danger">${fmt(expense)}</div>
-          <div class="stat-meta">${monthTx.filter(t => t.type === 'expense').length} despesas</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Saldo Líquido</div>
-          <div class="stat-value ${liquid >= 0 ? 'gold' : 'danger'}">${fmt(liquid)}</div>
-          <div class="stat-meta">no mês corrente</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Pipeline Ativo</div>
-          <div class="stat-value blue">${fmt(pipelineValue)}</div>
-          <div class="stat-meta">${activeDeals.length} negócios · ${closed} fechados</div>
-        </div>
+  const recTx=[...S.transactions].filter(t=>t.context===S.ctx).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+  document.getElementById('p-txs').innerHTML=recTx.length?recTx.map(t=>`
+    <div class="irow">
+      <div class="iicon" style="background:${t.type==='entrada'?'rgba(61,170,108,.12)':'rgba(192,64,60,.12)'}">
+        <span style="color:${t.type==='entrada'?'var(--green)':'var(--red)'};">${t.type==='entrada'?'↑':'↓'}</span>
       </div>
-      <div class="verse">
-        ${v[0]}
-        <cite>${v[1]}</cite>
+      <div class="iinfo"><div class="ititle">${t.desc||t.category}</div><div class="isub">${fmtD(t.date)}</div></div>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;color:${t.type==='entrada'?'var(--green)':'var(--red)'}">
+        ${t.type==='entrada'?'+':'-'} ${fmt(t.value)}
+      </span>
+    </div>`).join('')
+  :'<div class="empty"><div class="empty-ico">◈</div><div class="empty-txt">Nenhuma transação</div></div>';
+
+  const td=today();
+  const upEv=[...S.events].filter(e=>e.date>=td).sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||'')).slice(0,5);
+  document.getElementById('p-evs').innerHTML=upEv.length?upEv.map(e=>`
+    <div class="irow">
+      <div class="iicon" style="background:var(--gold-d)"><span style="color:var(--gold)">◷</span></div>
+      <div class="iinfo"><div class="ititle">${e.title}</div><div class="isub">${fmtD(e.date)}${e.time?' · '+e.time:''}</div></div>
+      <span class="badge ${e.source==='google'?'bg-blue':e.context==='pessoal'?'bg-purple':'bg-gold'}">${e.source==='google'?'Google':e.context}</span>
+    </div>`).join('')
+  :'<div class="empty"><div class="empty-ico">◷</div><div class="empty-txt">Nenhum evento próximo</div></div>';
+
+  // renderiza o gráfico após o DOM atualizar
+  requestAnimationFrame(renderChart);
+}
+
+// ═══════════════════════════════════════
+// FINANÇAS
+// ═══════════════════════════════════════
+function openTxModal(id){
+  editTx=id||null;
+  document.getElementById('m-tx-title').textContent=id?'Editar Transação':'Nova Transação';
+  let t=id?S.transactions.find(x=>x.id===id):null;
+  document.getElementById('tx-val').value=t?t.value:'';
+  document.getElementById('tx-dt').value=t?t.date:today();
+  document.getElementById('tx-desc').value=t?t.desc:'';
+  document.getElementById('tx-cat').value=t?t.category:'comissao';
+  document.getElementById('tx-ctx').value=t?t.context:S.ctx;
+  setTxT(t?t.type:'entrada'); om('m-tx');
+}
+function setTxT(t){
+  txType=t;
+  const e=document.getElementById('btn-ent'),s=document.getElementById('btn-sai');
+  e.style.cssText=t==='entrada'?'background:rgba(61,170,108,.12);border-color:var(--green);color:var(--green)':'';
+  s.style.cssText=t==='saida'?'background:rgba(192,64,60,.12);border-color:var(--red);color:var(--red)':'';
+}
+function saveTx(){
+  const v=parseFloat(document.getElementById('tx-val').value);
+  const d=document.getElementById('tx-dt').value;
+  if(!v||v<=0){toast('Informe um valor válido');return;}
+  if(!d){toast('Informe a data');return;}
+  const tx={id:editTx||uid(),type:txType,value:v,date:d,
+    desc:document.getElementById('tx-desc').value.trim(),
+    category:document.getElementById('tx-cat').value,
+    context:document.getElementById('tx-ctx').value,
+    createdAt:new Date().toISOString()};
+  if(editTx){const i=S.transactions.findIndex(x=>x.id===editTx);if(i>=0)S.transactions[i]=tx;}
+  else S.transactions.push(tx);
+  save();cm('m-tx');renderFin();toast(editTx?'Transação atualizada':'Transação registrada');editTx=null;
+}
+function delTx(id){ S.transactions=S.transactions.filter(x=>x.id!==id);save();renderFin();toast('Removida'); }
+function fFin(btn,g){
+  const k=g==='c'?'fc':'ft';
+  F[k]=btn.dataset[k];
+  document.querySelectorAll(`[data-${k}]`).forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderFin();
+}
+function renderFin(){
+  let txs=[...S.transactions].sort((a,b)=>b.date.localeCompare(a.date));
+  if(F.fc!=='todos') txs=txs.filter(t=>t.context===F.fc);
+  if(F.ft!=='todos') txs=txs.filter(t=>t.type===F.ft);
+  document.getElementById('fin-list').innerHTML=txs.length?txs.map(t=>`
+    <div class="irow">
+      <div class="iicon" style="background:${t.type==='entrada'?'rgba(61,170,108,.12)':'rgba(192,64,60,.12)'}">
+        <span style="color:${t.type==='entrada'?'var(--green)':'var(--red)'};">${t.type==='entrada'?'↑':'↓'}</span>
       </div>
-      <div class="view-sub" style="margin-top:8px">Próximos compromissos</div>
-      ${upcoming.length === 0
-        ? '<div class="empty">Nada agendado por aqui.</div>'
-        : upcoming.map(a => `
-          <div class="item">
-            <div class="item-head">
-              <div>
-                <div class="item-title">${esc(a.title)}</div>
-                <div class="item-meta">${fmtDate(a.date)}${a.time ? ' · ' + a.time : ''}</div>
-              </div>
-            </div>
-          </div>
-        `).join('')
-      }
-    `;
-  },
-
-  finance() {
-    const month = new Date().toISOString().slice(0, 7);
-    const tx = data.finance.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-    const monthTx = tx.filter(t => t.date && t.date.startsWith(month));
-    const income = monthTx.filter(t => t.type === 'income').reduce((s, t) => s + Number(t.value), 0);
-    const expense = monthTx.filter(t => t.type === 'expense').reduce((s, t) => s + Number(t.value), 0);
-
-    return `
-      <h1 class="view-title">Finança</h1>
-      <p class="view-sub">Comissões e despesas</p>
-      <div class="stat-grid">
-        <div class="stat">
-          <div class="stat-label">Entradas (mês)</div>
-          <div class="stat-value gold">${fmt(income)}</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Saídas (mês)</div>
-          <div class="stat-value danger">${fmt(expense)}</div>
-        </div>
+      <div class="iinfo">
+        <div class="ititle">${t.desc||t.category}</div>
+        <div class="isub">${fmtD(t.date)} · ${t.category} · <span class="badge ${t.context==='pessoal'?'bg-purple':'bg-gold'}" style="padding:1px 6px">${t.context}</span></div>
       </div>
-      ${tx.length === 0
-        ? '<div class="empty">Nenhum lançamento ainda. Toque no + para começar.</div>'
-        : tx.map(t => `
-          <div class="item">
-            <div class="item-head">
-              <div style="flex:1">
-                <div class="item-title">${esc(t.desc)}</div>
-                <div class="item-meta">
-                  <span class="badge badge-${t.type}">${t.type === 'income' ? 'Entrada' : 'Saída'}</span>
-                  · ${esc(t.category || 'Geral')} · ${fmtDate(t.date)}
-                </div>
-              </div>
-              <div style="text-align:right">
-                <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:${t.type === 'income' ? 'var(--gold-bright)' : 'var(--danger)'}">
-                  ${t.type === 'expense' ? '-' : ''}${fmt(t.value)}
-                </div>
-              </div>
-            </div>
-            <div class="item-actions">
-              <button class="item-btn primary" onclick="editItem('finance','${t.id}')">Editar</button>
-              <button class="item-btn danger" onclick="deleteItem('finance','${t.id}')">Excluir</button>
-            </div>
-          </div>
-        `).join('')
-      }
-    `;
-  },
-
-  agenda() {
-    const today = todayISO();
-    const items = data.agenda.slice().sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-    const upcoming = items.filter(a => !a.done && a.date >= today);
-    const past = items.filter(a => a.done || a.date < today);
-
-    return `
-      <h1 class="view-title">Agenda</h1>
-      <p class="view-sub">Compromissos & visitas</p>
-      <div class="view-sub" style="margin-top:8px">Próximos · ${upcoming.length}</div>
-      ${upcoming.length === 0
-        ? '<div class="empty">Nenhum compromisso à frente.</div>'
-        : upcoming.map(a => agendaItem(a)).join('')
-      }
-      ${past.length > 0 ? `
-        <div class="view-sub" style="margin-top:24px">Concluídos / Passados</div>
-        ${past.slice(0, 10).map(a => agendaItem(a)).join('')}
-      ` : ''}
-    `;
-  },
-
-  funnel() {
-    const counts = {};
-    STAGES.forEach(s => counts[s] = data.deals.filter(d => d.stage === s).length);
-    const filtered = data.deals.filter(d => d.stage === funnelStage)
-      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-    return `
-      <h1 class="view-title">Funil</h1>
-      <p class="view-sub">Captação → Fechamento</p>
-      <div class="funnel-tabs">
-        ${STAGES.map(s => `
-          <button class="funnel-tab ${funnelStage === s ? 'active' : ''}" onclick="setFunnelStage('${s}')">
-            ${s} <span class="count">${counts[s]}</span>
-          </button>
-        `).join('')}
+      <span style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:${t.type==='entrada'?'var(--green)':'var(--red)'};margin-right:8px">
+        ${t.type==='entrada'?'+':'-'} ${fmt(t.value)}
+      </span>
+      <div class="iact">
+        <button class="btn btn-ghost btn-sm" onclick="openTxModal('${t.id}')">✎</button>
+        <button class="btn btn-danger btn-sm" onclick="delTx('${t.id}')">✕</button>
       </div>
-      ${filtered.length === 0
-        ? '<div class="empty">Nenhum negócio neste estágio.</div>'
-        : filtered.map(d => `
-          <div class="item">
-            <div class="item-head">
-              <div style="flex:1">
-                <div class="item-title">${esc(d.name)}</div>
-                <div class="item-meta">
-                  ${d.property ? esc(d.property) + ' · ' : ''}${d.contact ? esc(d.contact) : ''}
-                </div>
-                ${d.value ? `<div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold-bright);margin-top:6px">${fmt(d.value)}</div>` : ''}
-                ${d.notes ? `<div class="item-meta" style="margin-top:6px;font-style:italic">${esc(d.notes)}</div>` : ''}
-              </div>
-            </div>
-            <div class="item-actions">
-              ${STAGES.filter(s => s !== d.stage).slice(0, 2).map(s => `
-                <button class="item-btn primary" onclick="moveDeal('${d.id}','${s}')">→ ${s}</button>
-              `).join('')}
-              <button class="item-btn" onclick="editItem('deals','${d.id}')">Editar</button>
-              <button class="item-btn danger" onclick="deleteItem('deals','${d.id}')">×</button>
-            </div>
-          </div>
-        `).join('')
-      }
-    `;
-  },
+    </div>`).join('')
+  :'<div class="empty"><div class="empty-ico">◈</div><div class="empty-txt">Nenhuma transação encontrada</div></div>';
+}
 
-  goals() {
-    return `
-      <h1 class="view-title">Metas</h1>
-      <p class="view-sub">Onde você quer chegar</p>
-      ${data.goals.length === 0
-        ? '<div class="empty">Sem metas definidas. Comece pelo +.</div>'
-        : data.goals.map(g => {
-          const pct = Math.min(100, (Number(g.current) / Number(g.target)) * 100 || 0);
-          return `
-            <div class="item">
-              <div class="item-head">
-                <div style="flex:1">
-                  <div class="item-title">${esc(g.title)}</div>
-                  <div class="item-meta">
-                    ${Number(g.current).toLocaleString('pt-BR')} / ${Number(g.target).toLocaleString('pt-BR')} ${esc(g.unit || '')}
-                    ${g.deadline ? ' · até ' + fmtDate(g.deadline) : ''}
-                  </div>
-                  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-                  <div class="item-meta" style="margin-top:6px">${pct.toFixed(0)}% concluído</div>
-                </div>
-              </div>
-              <div class="item-actions">
-                <button class="item-btn primary" onclick="updateGoal('${g.id}')">Atualizar</button>
-                <button class="item-btn" onclick="editItem('goals','${g.id}')">Editar</button>
-                <button class="item-btn danger" onclick="deleteItem('goals','${g.id}')">Excluir</button>
-              </div>
-            </div>
-          `;
-        }).join('')
-      }
-    `;
-  },
+// ═══════════════════════════════════════
+// AGENDA
+// ═══════════════════════════════════════
+function openEvModal(){
+  ['ev-title','ev-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ev-dt').value=today();
+  document.getElementById('ev-time').value='';
+  document.getElementById('ev-ctx').value=S.ctx;
+  om('m-ev');
+}
+function saveEv(){
+  const title=document.getElementById('ev-title').value.trim();
+  const dt=document.getElementById('ev-dt').value;
+  if(!title){toast('Informe o título');return;}
+  if(!dt){toast('Informe a data');return;}
+  S.events.push({id:uid(),title,date:dt,time:document.getElementById('ev-time').value,
+    desc:document.getElementById('ev-desc').value.trim(),
+    context:document.getElementById('ev-ctx').value,source:'local',createdAt:new Date().toISOString()});
+  save();cm('m-ev');renderAg();toast('Evento adicionado');
+}
+function delEv(id){ S.events=S.events.filter(e=>e.id!==id);save();renderAg();toast('Evento removido'); }
+function fAg(btn){
+  F.ag=btn.dataset.ac;
+  document.querySelectorAll('[data-ac]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderAg();
+}
+function isToday(d){ return d===today(); }
+function isTmrw(d){ const t=new Date();t.setDate(t.getDate()+1);return d===t.toISOString().slice(0,10); }
+function renderAg(){
+  const dot=document.getElementById('gcal-dot'),txt=document.getElementById('gcal-txt'),disc=document.getElementById('gcal-disc');
+  if(S.gcalToken){ dot.classList.add('on');txt.textContent=S.gcalAt?`Sincronizado — ${new Date(S.gcalAt).toLocaleString('pt-BR')}`:'Conectado';disc.style.display=''; }
+  else{ dot.classList.remove('on');txt.textContent='Não conectado ao Google Calendar';disc.style.display='none'; }
 
-  plans() {
-    return `
-      <h1 class="view-title">Planos</h1>
-      <p class="view-sub">Projetos com etapas</p>
-      ${data.plans.length === 0
-        ? '<div class="empty">Sem planos. Crie um pelo +.</div>'
-        : data.plans.map(p => {
-          const done = (p.steps || []).filter(s => s.done).length;
-          const total = (p.steps || []).length;
-          const pct = total ? (done / total) * 100 : 0;
-          return `
-            <div class="item">
-              <div class="item-head">
-                <div style="flex:1">
-                  <div class="item-title">${esc(p.title)}</div>
-                  ${p.notes ? `<div class="item-meta" style="font-style:italic">${esc(p.notes)}</div>` : ''}
-                  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-                  <div class="item-meta" style="margin-top:6px">${done}/${total} etapas</div>
-                </div>
-              </div>
-              <div style="margin-top:12px">
-                ${(p.steps || []).map((s, i) => `
-                  <div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line-soft)">
-                    <span class="check ${s.done ? 'done' : ''}" onclick="toggleStep('${p.id}',${i})"></span>
-                    <span style="flex:1;color:${s.done ? 'var(--ink-3)' : 'var(--ink-1)'};text-decoration:${s.done ? 'line-through' : 'none'}" onclick="editStep('${p.id}',${i})">${esc(s.text)}</span>
-                    <button class="item-btn danger" style="padding:4px 8px;font-size:10px" onclick="removeStep('${p.id}',${i})">×</button>
-                  </div>
-                `).join('')}
-              </div>
-              <div class="item-actions">
-                <button class="item-btn primary" onclick="addStep('${p.id}')">+ Etapa</button>
-                <button class="item-btn" onclick="editItem('plans','${p.id}')">Editar</button>
-                <button class="item-btn danger" onclick="deleteItem('plans','${p.id}')">Excluir</button>
-              </div>
-            </div>
-          `;
-        }).join('')
-      }
-    `;
+  let evs=[...S.events].sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||''));
+  if(F.ag==='google') evs=evs.filter(e=>e.source==='google');
+  else if(F.ag!=='todos') evs=evs.filter(e=>e.context===F.ag&&e.source!=='google');
+
+  const el=document.getElementById('agenda-list');
+  if(!evs.length){ el.innerHTML='<div class="empty"><div class="empty-ico">◷</div><div class="empty-txt">Nenhum evento encontrado</div></div>';return; }
+  const grp={};
+  evs.forEach(e=>{ if(!grp[e.date]) grp[e.date]=[]; grp[e.date].push(e); });
+  el.innerHTML=Object.entries(grp).map(([dt,items])=>`
+    <div class="cal-day">${fmtD(dt)}${isToday(dt)?' — Hoje':isTmrw(dt)?' — Amanhã':''}</div>
+    ${items.map(e=>`
+      <div class="cal-ev ${e.source==='google'?'google':e.context}">
+        <div class="cal-time">${e.time||'—'}</div>
+        <div style="flex:1"><div class="cal-t">${e.title}</div>${e.desc?`<div class="cal-d">${e.desc}</div>`:''}</div>
+        ${e.source!=='google'?`<button class="btn btn-danger btn-sm" onclick="delEv('${e.id}')">✕</button>`:''}
+      </div>`).join('')}`).join('');
+}
+
+// ═══════════════════════════════════════
+// GOOGLE CALENDAR
+// ═══════════════════════════════════════
+function initGCal(){
+  if(GCAL_CLIENT_ID==='SEU_GOOGLE_CLIENT_ID_AQUI') return;
+  if(window.google&&google.accounts){
+    gcalClient=google.accounts.oauth2.initTokenClient({client_id:GCAL_CLIENT_ID,scope:GCAL_SCOPE,callback:onGCalToken});
   }
-};
+}
+function gcalSync(){
+  if(GCAL_CLIENT_ID==='SEU_GOOGLE_CLIENT_ID_AQUI'){toast('Configure GCAL_CLIENT_ID no código');return;}
+  if(!gcalClient){initGCal();if(!gcalClient){toast('Google API ainda carregando');return;}}
+  if(S.gcalToken) fetchGCal(); else gcalClient.requestAccessToken();
+}
+function onGCalToken(r){ if(r.error){toast('Erro ao conectar');return;} S.gcalToken=r.access_token;save();fetchGCal(); }
+function fetchGCal(){
+  const now=new Date();
+  const min=new Date(now.getFullYear(),now.getMonth(),1).toISOString();
+  const max=new Date(now.getFullYear(),now.getMonth()+3,0).toISOString();
+  fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${min}&timeMax=${max}&singleEvents=true&orderBy=startTime&maxResults=100`,
+    {headers:{Authorization:`Bearer ${S.gcalToken}`}})
+  .then(r=>{ if(r.status===401){S.gcalToken=null;save();toast('Sessão expirada — reconecte');renderAg();return null;} return r.json(); })
+  .then(data=>{
+    if(!data||!data.items) return;
+    S.events=S.events.filter(e=>e.source!=='google');
+    data.items.forEach(item=>{
+      const start=item.start.dateTime||item.start.date;
+      S.events.push({id:'g_'+item.id,title:item.summary||'(sem título)',date:start.slice(0,10),
+        time:item.start.dateTime?start.slice(11,16):'',desc:item.description||'',context:'profissional',source:'google',googleId:item.id});
+    });
+    S.gcalAt=new Date().toISOString();save();renderAg();toast(`${data.items.length} eventos sincronizados`);
+  }).catch(()=>toast('Erro ao buscar eventos'));
+}
+function gcalDisc(){
+  if(S.gcalToken&&window.google) google.accounts.oauth2.revoke(S.gcalToken,()=>{});
+  S.gcalToken=null;S.gcalAt=null;S.events=S.events.filter(e=>e.source!=='google');
+  save();renderAg();toast('Desconectado');
+}
 
-function agendaItem(a) {
+// ═══════════════════════════════════════
+// FUNIL
+// ═══════════════════════════════════════
+const STAGES=['lead','visita','proposta','fechado','perdido'];
+const SL={lead:'Lead',visita:'Visita',proposta:'Proposta',fechado:'Fechado',perdido:'Perdido'};
+const SC={lead:'#4888CC',visita:'#C87830',proposta:'#8060A8',fechado:'#3DAA6C',perdido:'#C0403C'};
+const OPEN=['lead','visita','proposta'];
+
+function openDealModal(){
+  ['dl-title','dl-client','dl-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('dl-val').value='';
+  document.getElementById('dl-stage').value='lead';
+  om('m-deal');
+}
+function saveDeal(){
+  const title=document.getElementById('dl-title').value.trim();
+  const client=document.getElementById('dl-client').value.trim();
+  if(!title){toast('Informe o título');return;}
+  if(!client){toast('Informe o cliente');return;}
+  S.deals.push({id:uid(),title,client,value:parseFloat(document.getElementById('dl-val').value)||0,
+    stage:document.getElementById('dl-stage').value,notes:document.getElementById('dl-notes').value.trim(),
+    context:'profissional',createdAt:new Date().toISOString()});
+  save();cm('m-deal');renderFunil();toast('Negócio adicionado ao funil');
+}
+function advanceDeal(id){
+  const d=S.deals.find(x=>x.id===id);if(!d) return;
+  const i=OPEN.indexOf(d.stage);if(i<0||i>=OPEN.length-1) return;
+  d.stage=OPEN[i+1];save();renderFunil();toast('Avançado para '+SL[d.stage]);
+}
+function closeDeal(id){ const d=S.deals.find(x=>x.id===id);if(!d)return;d.stage='fechado';save();renderFunil();toast('Negócio fechado · 🎉'); }
+function loseDeal(id){ const d=S.deals.find(x=>x.id===id);if(!d)return;d.stage='perdido';save();renderFunil();toast('Marcado como perdido'); }
+function reopenDeal(id){ const d=S.deals.find(x=>x.id===id);if(!d)return;d.stage='lead';save();renderFunil();toast('Reaberto como Lead'); }
+function delDeal(id){ S.deals=S.deals.filter(x=>x.id!==id);save();renderFunil();toast('Negócio removido'); }
+function renderFunil(){
+  document.getElementById('funil-board').innerHTML=STAGES.map(stage=>{
+    const deals=S.deals.filter(d=>d.stage===stage),c=SC[stage];
+    const total=deals.filter(d=>!['fechado','perdido'].includes(d.stage)).reduce((s,d)=>s+d.value,0);
+    return `
+      <div class="funil-col">
+        <div class="fcol-hd" style="background:${c}14;border:1px solid ${c}28">
+          <div style="width:6px;height:6px;border-radius:50%;background:${c};flex-shrink:0"></div>
+          <div class="fcol-title" style="color:${c}">${SL[stage]}</div>
+          <div class="fcol-cnt" style="color:${c}">${deals.length}</div>
+          ${!['fechado','perdido'].includes(stage)&&deals.length?`<div style="margin-left:auto;font-family:'Cormorant Garamond',serif;font-size:13px;color:${c};opacity:.8">${fmt(deals.reduce((s,d)=>s+d.value,0))}</div>`:''}
+        </div>
+        ${deals.length?deals.map(d=>dealCard(d,stage)).join(''):'<div style="text-align:center;padding:18px;color:var(--dim);font-size:10px;letter-spacing:.08em;text-transform:uppercase">Vazio</div>'}
+      </div>`;
+  }).join('');
+}
+function dealCard(d,stage){
+  const i=OPEN.indexOf(stage),isOpen=i>=0;
+  let acts='';
+  if(isOpen){
+    if(i<OPEN.length-1) acts+=`<button class="btn-adv" onclick="advanceDeal('${d.id}')">→ ${SL[OPEN[i+1]]}</button>`;
+    else acts+=`<button class="btn-adv" onclick="closeDeal('${d.id}')">✓ Fechar</button>`;
+    acts+=`<button class="btn btn-ghost btn-sm" onclick="loseDeal('${d.id}')">✗</button>`;
+  } else {
+    acts+=`<button class="btn btn-ghost btn-sm" onclick="reopenDeal('${d.id}')">↩ Reabrir</button>`;
+  }
+  acts+=`<button class="btn btn-danger btn-sm" onclick="delDeal('${d.id}')">✕</button>`;
   return `
-    <div class="item">
-      <div class="item-head">
-        <div style="display:flex;gap:12px;flex:1">
-          <div onclick="toggleAgenda('${a.id}')" class="check ${a.done ? 'done' : ''}"></div>
-          <div style="flex:1">
-            <div class="item-title" style="text-decoration:${a.done ? 'line-through' : 'none'};color:${a.done ? 'var(--ink-3)' : 'var(--ink-1)'}">${esc(a.title)}</div>
-            <div class="item-meta">${fmtDate(a.date)}${a.time ? ' · ' + a.time : ''}${a.notes ? ' · ' + esc(a.notes) : ''}</div>
+    <div class="deal">
+      <div class="deal-t">${d.title}</div>
+      <div class="deal-c">◉ ${d.client}</div>
+      ${d.value?`<div class="deal-v">${fmt(d.value)}</div>`:''}
+      ${d.notes?`<div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">${d.notes}</div>`:''}
+      <div class="deal-act">${acts}</div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// METAS
+// ═══════════════════════════════════════
+function openMetaModal(){
+  ['mt-title','mt-unit','mt-dl'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mt-target').value='';
+  document.getElementById('mt-current').value='0';
+  document.getElementById('mt-ctx').value=S.ctx;
+  om('m-meta');
+}
+function saveMeta(){
+  const title=document.getElementById('mt-title').value.trim();
+  const target=parseFloat(document.getElementById('mt-target').value);
+  if(!title){toast('Informe o título');return;}
+  if(!target||target<=0){toast('Informe um valor meta');return;}
+  S.goals.push({id:uid(),title,target,current:parseFloat(document.getElementById('mt-current').value)||0,
+    unit:document.getElementById('mt-unit').value.trim(),deadline:document.getElementById('mt-dl').value,
+    context:document.getElementById('mt-ctx').value,createdAt:new Date().toISOString()});
+  save();cm('m-meta');renderMetas();toast('Meta criada');
+}
+function setMetaVal(id,val){
+  const g=S.goals.find(x=>x.id===id);if(!g)return;
+  g.current=Math.max(0,Math.min(g.target,parseFloat(val)||0));save();renderMetas();
+}
+function delMeta(id){ S.goals=S.goals.filter(x=>x.id!==id);save();renderMetas();toast('Meta removida'); }
+function fMeta(btn){
+  F.mc=btn.dataset.mc;
+  document.querySelectorAll('[data-mc]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderMetas();
+}
+function renderMetas(){
+  let goals=[...S.goals];
+  if(F.mc!=='todos') goals=goals.filter(g=>g.context===F.mc);
+  const el=document.getElementById('metas-list');
+  if(!goals.length){ el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">◎</div><div class="empty-txt">Nenhuma meta definida</div></div>';return; }
+  el.innerHTML=goals.map(g=>{
+    const pct=Math.min(100,Math.round((g.current/g.target)*100)),done=g.current>=g.target;
+    return `
+      <div class="card">
+        <div class="flexb mb8">
+          <div>
+            <div style="font-size:14px;font-weight:500;margin-bottom:4px;color:var(--text)">${g.title}</div>
+            <div style="font-size:11px;color:var(--muted);letter-spacing:.04em">${g.current} / ${g.target}${g.unit?' '+g.unit:''} · ${pct}%</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="badge ${done?'bg-green':g.context==='pessoal'?'bg-purple':'bg-gold'}">${done?'Concluída':g.context}</span>
+            <button class="btn btn-danger btn-sm" onclick="delMeta('${g.id}')">✕</button>
           </div>
         </div>
+        <div class="prog"><div class="prog-bar" style="width:${pct}%;background:${done?'var(--green)':'var(--gold)'};box-shadow:${done?'0 0 8px rgba(61,170,108,.4)':'0 0 8px rgba(200,160,80,.3)'}"></div></div>
+        ${g.deadline?`<div style="font-size:10px;color:var(--dim);margin-top:8px;letter-spacing:.06em;text-transform:uppercase">Prazo: ${fmtD(g.deadline)}</div>`:''}
+        <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+          <button class="btn btn-ghost btn-sm" style="flex:1" onclick="setMetaVal('${g.id}',${g.current-1})">−</button>
+          <input type="number" class="fc" style="flex:2;text-align:center;padding:5px 8px" value="${g.current}"
+            onchange="setMetaVal('${g.id}',this.value)" min="0" max="${g.target}">
+          <button class="btn btn-ghost btn-sm" style="flex:1" onclick="setMetaVal('${g.id}',${g.current+1})">+</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// PLANOS
+// ═══════════════════════════════════════
+function openPlanoModal(){
+  ['pl-title','pl-desc','pl-due'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pl-prio').value='media';
+  document.getElementById('pl-ctx').value=S.ctx;
+  om('m-plano');
+}
+function savePlano(){
+  const title=document.getElementById('pl-title').value.trim();
+  if(!title){toast('Informe o título');return;}
+  S.plans.push({id:uid(),title,desc:document.getElementById('pl-desc').value.trim(),
+    priority:document.getElementById('pl-prio').value,dueDate:document.getElementById('pl-due').value,
+    context:document.getElementById('pl-ctx').value,status:'pendente',createdAt:new Date().toISOString()});
+  save();cm('m-plano');renderPlanos();toast('Plano adicionado');
+}
+function cycleStatus(id){
+  const p=S.plans.find(x=>x.id===id);if(!p)return;
+  p.status={pendente:'em_progresso',em_progresso:'concluido',concluido:'pendente'}[p.status];
+  save();renderPlanos();
+}
+function delPlano(id){ S.plans=S.plans.filter(x=>x.id!==id);save();renderPlanos();toast('Plano removido'); }
+function fPlano(btn,g){
+  const k=g==='c'?'pc':'ps';
+  F[k]=btn.dataset[k];
+  document.querySelectorAll(`[data-${k}]`).forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderPlanos();
+}
+function renderPlanos(){
+  let plans=[...S.plans];
+  if(F.pc!=='todos') plans=plans.filter(p=>p.context===F.pc);
+  if(F.ps!=='todos') plans=plans.filter(p=>p.status===F.ps);
+  const PC={alta:'var(--red)',media:'var(--orange)',baixa:'var(--green)'};
+  const SLab={pendente:'Pendente',em_progresso:'Em Progresso',concluido:'Concluído'};
+  const SBadge={pendente:'bg-muted',em_progresso:'bg-orange',concluido:'bg-green'};
+  const SIco={pendente:'○',em_progresso:'◐',concluido:'●'};
+  const el=document.getElementById('planos-list');
+  if(!plans.length){ el.innerHTML='<div class="empty"><div class="empty-ico">◫</div><div class="empty-txt">Nenhum plano encontrado</div></div>';return; }
+  el.innerHTML=plans.map(p=>`
+    <div class="irow" style="opacity:${p.status==='concluido'?.55:1}">
+      <div class="iicon" style="background:${PC[p.priority]}12;cursor:pointer;font-size:17px;color:${PC[p.priority]}" onclick="cycleStatus('${p.id}')">${SIco[p.status]}</div>
+      <div class="iinfo">
+        <div class="ititle" style="${p.status==='concluido'?'text-decoration:line-through;color:var(--muted)':''}">${p.title}</div>
+        <div class="isub">${p.dueDate?fmtD(p.dueDate)+' · ':''}<span style="color:${PC[p.priority]}">${p.priority}</span></div>
       </div>
-      <div class="item-actions">
-        <button class="item-btn primary" onclick="addToCalendar('${a.id}')">📅 Apple</button>
-        <button class="item-btn primary" onclick="addToGoogleCalendar('${a.id}')">🗓️ Google</button>
-        <button class="item-btn" onclick="editItem('agenda','${a.id}')">Editar</button>
-        <button class="item-btn danger" onclick="deleteItem('agenda','${a.id}')">Excluir</button>
+      <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+        <span class="badge ${SBadge[p.status]}">${SLab[p.status]}</span>
+        <button class="btn btn-danger btn-sm" onclick="delPlano('${p.id}')">✕</button>
       </div>
-    </div>
-  `;
+    </div>`).join('');
 }
 
-function esc(s) {
-  return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-}
+// ═══════════════════════════════════════
+// CHART — Tendência 6 meses
+// ═══════════════════════════════════════
+function renderChart(){
+  const svg=document.getElementById('chart-svg');
+  const tip=document.getElementById('chart-tip');
+  if(!svg) return;
 
-function backupBanner() {
-  const hasData = data.finance.length || data.agenda.length || data.deals.length || data.goals.length || data.plans.length;
-  if (!hasData) return '';
-  const lastBackup = data.meta?.lastBackup;
-  const days = lastBackup ? Math.floor((Date.now() - lastBackup) / 86400000) : null;
-  let level, msg, icon;
-  if (!lastBackup) {
-    level = 'warn'; icon = '⚠️';
-    msg = 'Você ainda não fez nenhum backup. Toque em Exportar agora pra não perder seus dados.';
-  } else if (days >= 7) {
-    level = 'warn'; icon = '⚠️';
-    msg = `Último backup há ${days} dias. Faça um agora.`;
-  } else if (days >= 3) {
-    level = 'info'; icon = '💾';
-    msg = `Último backup há ${days} dias. Faça um quando puder.`;
-  } else {
-    return '';
+  const now=new Date();
+  const months=[];
+  for(let i=5;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push({year:d.getFullYear(),month:d.getMonth(),
+      label:d.toLocaleDateString('pt-BR',{month:'short'}).replace('.','').toUpperCase()});
   }
-  return `
-    <div class="backup-banner ${level}" onclick="exportData()">
-      <div class="backup-icon">${icon}</div>
-      <div class="backup-msg">${msg}</div>
-      <div class="backup-cta">Backup ›</div>
-    </div>
-  `;
-}
 
-// ===== ACTIONS =====
-function setFunnelStage(s) { funnelStage = s; render(); }
-
-function toggleAgenda(id) {
-  const a = data.agenda.find(x => x.id === id);
-  if (a) { a.done = !a.done; save(); render(); }
-}
-
-function pad(n) { return String(n).padStart(2, '0'); }
-
-function addToCalendar(id) {
-  const a = data.agenda.find(x => x.id === id);
-  if (!a) return;
-  let dtStart, dtEnd, allDay = false;
-  if (a.time) {
-    const [h, m] = a.time.split(':').map(Number);
-    const start = new Date(a.date + 'T00:00:00');
-    start.setHours(h, m, 0, 0);
-    const dur = Number(a.duration) || 60;
-    const end = new Date(start.getTime() + dur * 60000);
-    const fmtICS = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
-    dtStart = `DTSTART:${fmtICS(start)}`;
-    dtEnd = `DTEND:${fmtICS(end)}`;
-  } else {
-    allDay = true;
-    const start = a.date.replace(/-/g, '');
-    const d = new Date(a.date + 'T00:00:00');
-    d.setDate(d.getDate() + 1);
-    const endStr = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
-    dtStart = `DTSTART;VALUE=DATE:${start}`;
-    dtEnd = `DTEND;VALUE=DATE:${endStr}`;
-  }
-  const escIcs = s => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
-  const now = new Date();
-  const dtStamp = `${now.getUTCFullYear()}${pad(now.getUTCMonth() + 1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}${pad(now.getUTCSeconds())}Z`;
-  const alarmMin = Number(a.alarm) || 0;
-  const alarmBlock = (alarmMin > 0 && !allDay) ? `BEGIN:VALARM\nTRIGGER:-PT${alarmMin}M\nACTION:DISPLAY\nDESCRIPTION:${escIcs(a.title)}\nEND:VALARM\n` : '';
-  const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Ophir B7//Agenda//PT\nCALSCALE:GREGORIAN\nBEGIN:VEVENT\nUID:${a.id}@ophir-b7\nDTSTAMP:${dtStamp}\n${dtStart}\n${dtEnd}\nSUMMARY:${escIcs(a.title)}\n${a.location ? 'LOCATION:' + escIcs(a.location) + '\n' : ''}${a.notes ? 'DESCRIPTION:' + escIcs(a.notes) + '\n' : ''}${alarmBlock}END:VEVENT\nEND:VCALENDAR`;
-  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `${a.title.replace(/[^a-z0-9]/gi, '_').slice(0, 30)}.ics`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  toast('📅 Abrindo no Calendário...');
-}
-
-function addToGoogleCalendar(id) {
-  const a = data.agenda.find(x => x.id === id);
-  if (!a) return;
-  let dates;
-  if (a.time) {
-    const [h, m] = a.time.split(':').map(Number);
-    const start = new Date(a.date + 'T00:00:00');
-    start.setHours(h, m, 0, 0);
-    const dur = Number(a.duration) || 60;
-    const end = new Date(start.getTime() + dur * 60000);
-    const fmtG = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
-    dates = `${fmtG(start)}/${fmtG(end)}`;
-  } else {
-    const start = a.date.replace(/-/g, '');
-    const d = new Date(a.date + 'T00:00:00');
-    d.setDate(d.getDate() + 1);
-    const endStr = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
-    dates = `${start}/${endStr}`;
-  }
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: a.title,
-    dates: dates,
-    details: a.notes || '',
-    location: a.location || '',
-    ctz: Intl.DateTimeFormat().resolvedOptions().timeZone
+  const data=months.map(m=>{
+    const txs=S.transactions.filter(t=>{
+      const d=new Date(t.date);
+      return d.getMonth()===m.month&&d.getFullYear()===m.year&&t.context===S.ctx;
+    });
+    return {
+      label:m.label,
+      ent:txs.filter(t=>t.type==='entrada').reduce((s,t)=>s+t.value,0),
+      sai:txs.filter(t=>t.type==='saida').reduce((s,t)=>s+t.value,0),
+    };
   });
-  window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
-  toast('🗓️ Abrindo Google Agenda...');
+
+  const maxVal=Math.max(...data.flatMap(d=>[d.ent,d.sai]),1);
+  const W=svg.getBoundingClientRect().width||600;
+  const H=140,PAD_L=8,PAD_R=8,PAD_T=12,PAD_B=28;
+  const chartH=H-PAD_T-PAD_B;
+  const colW=(W-PAD_L-PAD_R)/months.length;
+  const barW=Math.min(colW*0.28,22);
+  const gap=barW*0.5;
+
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+
+  // Grid lines
+  let lines='';
+  [0,.25,.5,.75,1].forEach(p=>{
+    const y=PAD_T+chartH*(1-p);
+    lines+=`<line x1="${PAD_L}" y1="${y}" x2="${W-PAD_R}" y2="${y}" stroke="rgba(200,160,80,0.07)" stroke-width="1"/>`;
+  });
+
+  // Bars + labels
+  let bars='',labels='';
+  data.forEach((d,i)=>{
+    const cx=PAD_L+colW*i+colW/2;
+    const entH=Math.max(d.ent>0?2:0,(d.ent/maxVal)*chartH);
+    const saiH=Math.max(d.sai>0?2:0,(d.sai/maxVal)*chartH);
+    const entY=PAD_T+chartH-entH;
+    const saiY=PAD_T+chartH-saiH;
+
+    const entTip=`${d.label}: +${fmt(d.ent)}`;
+    const saiTip=`${d.label}: -${fmt(d.sai)}`;
+
+    bars+=`<rect class="chart-bar" x="${cx-gap-barW}" y="${entY}" width="${barW}" height="${entH}"
+      fill="rgba(61,170,108,0.75)" rx="2"
+      onmouseenter="showTip(event,'${entTip}')" onmouseleave="hideTip()"/>`;
+    bars+=`<rect class="chart-bar" x="${cx+gap}" y="${saiY}" width="${barW}" height="${saiH}"
+      fill="rgba(192,64,60,0.75)" rx="2"
+      onmouseenter="showTip(event,'${saiTip}')" onmouseleave="hideTip()"/>`;
+
+    labels+=`<text x="${cx}" y="${H-6}" text-anchor="middle"
+      font-family="Inter Tight,sans-serif" font-size="9" letter-spacing="0.08em"
+      fill="rgba(138,128,112,0.8)" font-weight="500">${d.label}</text>`;
+  });
+
+  svg.innerHTML=lines+bars+labels;
 }
 
-function moveDeal(id, stage) {
-  const d = data.deals.find(x => x.id === id);
-  if (d) { d.stage = stage; save(); toast(`Movido para ${stage}`); render(); }
+function showTip(e,txt){
+  const tip=document.getElementById('chart-tip');
+  tip.textContent=txt; tip.style.display='block';
+  const r=tip.parentElement.getBoundingClientRect();
+  tip.style.left=(e.clientX-r.left+8)+'px';
+  tip.style.top=(e.clientY-r.top-32)+'px';
 }
+function hideTip(){ document.getElementById('chart-tip').style.display='none'; }
 
-function toggleStep(planId, idx) {
-  const p = data.plans.find(x => x.id === planId);
-  if (p && p.steps[idx]) { p.steps[idx].done = !p.steps[idx].done; save(); render(); }
-}
-
-function addStep(planId) {
-  const text = prompt('Nova etapa:');
-  if (!text) return;
-  const p = data.plans.find(x => x.id === planId);
-  if (p) { p.steps = p.steps || []; p.steps.push({ text, done: false }); save(); render(); }
-}
-
-function updateGoal(id) {
-  const g = data.goals.find(x => x.id === id);
-  if (!g) return;
-  const v = prompt('Progresso atual (' + g.unit + '):', g.current);
-  if (v === null) return;
-  g.current = Number(v) || 0;
-  save();
-  if (g.current >= g.target) toast('🎯 Meta atingida!');
-  render();
-}
-
-function deleteItem(area, id) {
-  if (!confirm('Excluir este item?')) return;
-  data[area] = data[area].filter(x => x.id !== id);
-  save(); render();
-}
-
-function editItem(area, id) {
-  editingId = id;
-  const map = { finance: 'finance', agenda: 'agenda', deals: 'funnel', goals: 'goals', plans: 'plans' };
-  modalCtx = map[area];
-  const item = data[area].find(x => x.id === id);
-  if (!item) return;
-  if (area === 'finance') txType = item.type;
-  const mc = document.getElementById('modal-content');
-  mc.innerHTML = modalForms[modalCtx](item);
-  document.getElementById('modal-bg').classList.add('open');
-}
-
-function editStep(planId, idx) {
-  const p = data.plans.find(x => x.id === planId);
-  if (!p || !p.steps[idx]) return;
-  const text = prompt('Editar etapa:', p.steps[idx].text);
-  if (text === null || !text.trim()) return;
-  p.steps[idx].text = text.trim();
-  save(); render();
-}
-
-function removeStep(planId, idx) {
-  if (!confirm('Remover esta etapa?')) return;
-  const p = data.plans.find(x => x.id === planId);
-  if (!p) return;
-  p.steps.splice(idx, 1);
-  save(); render();
-}
-
-// ===== MODAL =====
-function openModal() {
-  modalCtx = currentView;
-  txType = 'income';
-  editingId = null;
-  const mc = document.getElementById('modal-content');
-  mc.innerHTML = modalForms[currentView] ? modalForms[currentView]() : '';
-  document.getElementById('modal-bg').classList.add('open');
-}
-
-function closeModal() {
-  editingId = null;
-  document.getElementById('modal-bg').classList.remove('open');
-}
-
-const modalForms = {
-  finance: (it) => `
-    <div class="modal-handle"></div>
-    <div class="modal-title">${it ? 'Editar' : 'Novo'} Lançamento</div>
-    <div class="modal-sub">Comissão ou despesa</div>
-    <div class="field">
-      <div class="toggle">
-        <button class="${(it ? it.type : 'income') === 'income' ? 'active income' : ''}" id="tx-income" onclick="setTxType('income')">↑ Entrada</button>
-        <button class="${(it ? it.type : 'income') === 'expense' ? 'active expense' : ''}" id="tx-expense" onclick="setTxType('expense')">↓ Saída</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>Descrição</label>
-      <input id="f-desc" placeholder="Ex: Comissão Apto Centro / Combustível" value="${it ? esc(it.desc) : ''}">
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Valor (R$)</label>
-        <input id="f-value" type="number" step="0.01" inputmode="decimal" placeholder="0,00" value="${it ? it.value : ''}">
-      </div>
-      <div class="field">
-        <label>Data</label>
-        <input id="f-date" type="date" value="${it ? it.date : todayISO()}">
-      </div>
-    </div>
-    <div class="field">
-      <label>Categoria</label>
-      <input id="f-category" placeholder="Comissão / Marketing / Combustível..." value="${it ? esc(it.category || '') : ''}">
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveFinance()">${it ? 'Salvar Edição' : 'Salvar'}</button>
-    </div>
-  `,
-
-  agenda: (it) => `
-    <div class="modal-handle"></div>
-    <div class="modal-title">${it ? 'Editar' : 'Novo'} Compromisso</div>
-    <div class="modal-sub">Visita, reunião, ligação</div>
-    <div class="field">
-      <label>Título</label>
-      <input id="a-title" placeholder="Ex: Visita com Família Souza" value="${it ? esc(it.title) : ''}">
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Data</label>
-        <input id="a-date" type="date" value="${it ? it.date : todayISO()}">
-      </div>
-      <div class="field">
-        <label>Hora</label>
-        <input id="a-time" type="time" value="${it ? (it.time || '') : ''}">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Duração (min)</label>
-        <input id="a-duration" type="number" inputmode="numeric" placeholder="60" value="${it ? (it.duration || 60) : 60}">
-      </div>
-      <div class="field">
-        <label>Lembrete (min antes)</label>
-        <select id="a-alarm">
-          <option value="0" ${it && it.alarm === '0' ? 'selected' : ''}>Sem alarme</option>
-          <option value="5" ${it && it.alarm === '5' ? 'selected' : ''}>5 min antes</option>
-          <option value="15" ${(!it || it.alarm === '15') ? 'selected' : ''}>15 min antes</option>
-          <option value="30" ${it && it.alarm === '30' ? 'selected' : ''}>30 min antes</option>
-          <option value="60" ${it && it.alarm === '60' ? 'selected' : ''}>1 hora antes</option>
-          <option value="1440" ${it && it.alarm === '1440' ? 'selected' : ''}>1 dia antes</option>
-        </select>
-      </div>
-    </div>
-    <div class="field">
-      <label>Local</label>
-      <input id="a-location" placeholder="Endereço ou link" value="${it ? esc(it.location || '') : ''}">
-    </div>
-    <div class="field">
-      <label>Notas</label>
-      <textarea id="a-notes" placeholder="Observações...">${it ? esc(it.notes || '') : ''}</textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveAgenda()">${it ? 'Salvar Edição' : 'Salvar'}</button>
-    </div>
-  `,
-
-  funnel: (it) => `
-    <div class="modal-handle"></div>
-    <div class="modal-title">${it ? 'Editar' : 'Novo'} Negócio</div>
-    <div class="modal-sub">Lead, captação ou venda</div>
-    <div class="field">
-      <label>Cliente</label>
-      <input id="d-name" placeholder="Nome do cliente" value="${it ? esc(it.name) : ''}">
-    </div>
-    <div class="field">
-      <label>Contato</label>
-      <input id="d-contact" placeholder="Telefone / WhatsApp" value="${it ? esc(it.contact || '') : ''}">
-    </div>
-    <div class="field">
-      <label>Imóvel</label>
-      <input id="d-property" placeholder="Ex: Apto 2Q Centro" value="${it ? esc(it.property || '') : ''}">
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Valor (R$)</label>
-        <input id="d-value" type="number" step="0.01" inputmode="decimal" placeholder="0,00" value="${it ? (it.value || '') : ''}">
-      </div>
-      <div class="field">
-        <label>Estágio</label>
-        <select id="d-stage">
-          ${STAGES.map(s => `<option ${s === (it ? it.stage : funnelStage) ? 'selected' : ''}>${s}</option>`).join('')}
-        </select>
-      </div>
-    </div>
-    <div class="field">
-      <label>Notas</label>
-      <textarea id="d-notes" placeholder="Detalhes, próximos passos...">${it ? esc(it.notes || '') : ''}</textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveDeal()">${it ? 'Salvar Edição' : 'Salvar'}</button>
-    </div>
-  `,
-
-  goals: (it) => `
-    <div class="modal-handle"></div>
-    <div class="modal-title">${it ? 'Editar' : 'Nova'} Meta</div>
-    <div class="modal-sub">O que você quer alcançar</div>
-    <div class="field">
-      <label>Título</label>
-      <input id="g-title" placeholder="Ex: Vender 30 milhões em 2026" value="${it ? esc(it.title) : ''}">
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Atual</label>
-        <input id="g-current" type="number" step="0.01" inputmode="decimal" placeholder="0" value="${it ? (it.current || '') : ''}">
-      </div>
-      <div class="field">
-        <label>Alvo</label>
-        <input id="g-target" type="number" step="0.01" inputmode="decimal" placeholder="100" value="${it ? (it.target || '') : ''}">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Unidade</label>
-        <input id="g-unit" placeholder="vendas / R$ / km" value="${it ? esc(it.unit || '') : ''}">
-      </div>
-      <div class="field">
-        <label>Prazo</label>
-        <input id="g-deadline" type="date" value="${it ? (it.deadline || '') : ''}">
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveGoal()">${it ? 'Salvar Edição' : 'Salvar'}</button>
-    </div>
-  `,
-
-  plans: (it) => `
-    <div class="modal-handle"></div>
-    <div class="modal-title">${it ? 'Editar' : 'Novo'} Plano</div>
-    <div class="modal-sub">Projeto com etapas</div>
-    <div class="field">
-      <label>Título</label>
-      <input id="p-title" placeholder="Ex: Lançar campanha de captação" value="${it ? esc(it.title) : ''}">
-    </div>
-    <div class="field">
-      <label>Notas</label>
-      <textarea id="p-notes" placeholder="Visão geral do plano...">${it ? esc(it.notes || '') : ''}</textarea>
-    </div>
-    <div class="field">
-      <label>Etapas (uma por linha)${it ? ' — editar aqui sobrescreve as existentes' : ''}</label>
-      <textarea id="p-steps" rows="5" placeholder="Definir escopo&#10;Validar com clientes&#10;Executar">${it ? (it.steps || []).map(s => esc(s.text)).join('\n') : ''}</textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="savePlan()">${it ? 'Salvar Edição' : 'Salvar'}</button>
-    </div>
-  `,
-};
-
-function setTxType(t) {
-  txType = t;
-  const inc = document.getElementById('tx-income');
-  const exp = document.getElementById('tx-expense');
-  if (inc) inc.className = t === 'income' ? 'active income' : '';
-  if (exp) exp.className = t === 'expense' ? 'active expense' : '';
-}
-
-// ===== SAVE =====
-function saveFinance() {
-  const desc = val('f-desc');
-  const value = Number(val('f-value'));
-  if (!desc || !value) return toast('Preencha descrição e valor');
-  const payload = { type: txType, desc, value, date: val('f-date') || todayISO(), category: val('f-category') || 'Geral' };
-  if (editingId) {
-    const it = data.finance.find(x => x.id === editingId);
-    if (it) Object.assign(it, payload);
-    toast('Lançamento atualizado');
-  } else {
-    data.finance.push({ id: uid(), ...payload });
-    toast('Lançamento salvo');
-  }
-  save(); closeModal(); render();
-}
-
-function saveAgenda() {
-  const title = val('a-title');
-  if (!title) return toast('Preencha o título');
-  const payload = {
-    title,
-    date: val('a-date') || todayISO(),
-    time: val('a-time'),
-    duration: Number(val('a-duration')) || 60,
-    alarm: val('a-alarm') || '15',
-    location: val('a-location'),
-    notes: val('a-notes'),
-  };
-  let createdId = null;
-  if (editingId) {
-    const it = data.agenda.find(x => x.id === editingId);
-    if (it) Object.assign(it, payload);
-    toast('Compromisso atualizado');
-  } else {
-    createdId = uid();
-    data.agenda.push({ id: createdId, ...payload, done: false });
-    toast('Compromisso salvo · abrindo Calendário');
-  }
-  save(); closeModal(); render();
-  if (createdId) setTimeout(() => addToGoogleCalendar(createdId), 500);
-}
-
-function saveDeal() {
-  const name = val('d-name');
-  if (!name) return toast('Preencha o cliente');
-  const payload = { name, contact: val('d-contact'), property: val('d-property'), value: Number(val('d-value')) || 0, stage: val('d-stage') || 'Lead', notes: val('d-notes') };
-  if (editingId) {
-    const it = data.deals.find(x => x.id === editingId);
-    if (it) Object.assign(it, payload);
-    toast('Negócio atualizado');
-  } else {
-    data.deals.push({ id: uid(), ...payload, createdAt: Date.now() });
-    toast('Negócio adicionado');
-  }
-  save(); closeModal(); render();
-}
-
-function saveGoal() {
-  const title = val('g-title');
-  const target = Number(val('g-target'));
-  if (!title || !target) return toast('Preencha título e alvo');
-  const payload = { title, current: Number(val('g-current')) || 0, target, unit: val('g-unit'), deadline: val('g-deadline') };
-  if (editingId) {
-    const it = data.goals.find(x => x.id === editingId);
-    if (it) Object.assign(it, payload);
-    toast('Meta atualizada');
-  } else {
-    data.goals.push({ id: uid(), ...payload });
-    toast('Meta criada');
-  }
-  save(); closeModal(); render();
-}
-
-function savePlan() {
-  const title = val('p-title');
-  if (!title) return toast('Preencha o título');
-  const newSteps = val('p-steps').split('\n').map(s => s.trim()).filter(Boolean);
-  if (editingId) {
-    const it = data.plans.find(x => x.id === editingId);
-    if (it) {
-      it.title = title;
-      it.notes = val('p-notes');
-      const oldMap = {};
-      (it.steps || []).forEach(s => { oldMap[s.text] = s.done; });
-      it.steps = newSteps.map(text => ({ text, done: oldMap[text] || false }));
-    }
-    toast('Plano atualizado');
-  } else {
-    data.plans.push({ id: uid(), title, notes: val('p-notes'), steps: newSteps.map(text => ({ text, done: false })) });
-    toast('Plano criado');
-  }
-  save(); closeModal(); render();
-}
-
-function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
-
-// ===== BACKUP =====
-function exportData() {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `ophir-b7-backup-${todayISO()}.json`;
+// ═══════════════════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════════════════
+function exportData(){
+  const payload=JSON.stringify(S,null,2);
+  const blob=new Blob([payload],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const d=new Date().toISOString().slice(0,10);
+  a.download=`ophir-b7-backup-${d}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  data.meta = data.meta || {};
-  data.meta.lastBackup = Date.now();
-  save();
-  toast('✓ Backup exportado');
-  render();
+  toast('Backup exportado com sucesso');
 }
-
-function importData() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json,application/json';
-  input.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const r = new FileReader();
-    r.onload = ev => {
-      try {
-        const incoming = JSON.parse(ev.target.result);
-        if (!confirm('Importar substituirá os dados atuais. Continuar?')) return;
-        data = { ...structuredClone(defaultData), ...incoming };
-        save();
-        toast('Dados importados');
-        render();
-      } catch { toast('Arquivo inválido'); }
-    };
-    r.readAsText(file);
+function importData(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const parsed=JSON.parse(ev.target.result);
+      if(!parsed.transactions&&!parsed.deals&&!parsed.events){throw new Error('Arquivo inválido');}
+      S={...S,...parsed};
+      save(); render(curPage); toast('Dados importados com sucesso');
+    } catch(err){ toast('Arquivo inválido ou corrompido'); }
   };
-  input.click();
+  reader.readAsText(file);
+  e.target.value='';
 }
 
-function resetAll() {
-  data = structuredClone(defaultData);
-  save();
-  toast('Tudo limpo');
-  render();
-}
+// ═══════════════════════════════════════
+// MODAL HELPERS
+// ═══════════════════════════════════════
+function om(id){ document.getElementById(id).style.display='flex'; }
+function cm(id){ document.getElementById(id).style.display='none'; }
+function omo(e,id){ if(e.target.id===id) cm(id); }
 
-// ===== SERVICE WORKER =====
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+// ═══════════════════════════════════════
+// SERVICE WORKER
+// ═══════════════════════════════════════
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+function init(){
+  load();
+  document.querySelectorAll('.ctx-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().trim()===S.ctx));
+  renderPainel();
+  setTimeout(initGCal,2000);
+  // redraw chart on resize
+  let resizeTimer;
+  window.addEventListener('resize',()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(()=>{ if(curPage==='painel') renderChart(); },120);
   });
 }
-
-// ===== INIT =====
-setView('dashboard');
+window.addEventListener('load',init);
 </script>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </body>
 </html>
