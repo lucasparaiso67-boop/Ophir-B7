@@ -1022,25 +1022,42 @@ function saveReschedule(){
 }
 function addToGoogleCal(id){
   const e=S.events.find(x=>x.id===id);if(!e)return;
-  let dates;
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const dt=e.date.replace(/-/g,'');
+  let dtStart,dtEnd;
   if(e.time){
-    const dt=e.date.replace(/-/g,'');
-    const start=dt+'T'+e.time.replace(':','')+'00';
-    const h=parseInt(e.time.slice(0,2));
-    const mi=e.time.slice(3,5);
-    const endH=String(Math.min(h+1,23)).padStart(2,'0');
-    const end=dt+'T'+endH+mi+'00';
-    dates=start+'/'+end;
+    const t=e.time.replace(':','');
+    dtStart=dt+'T'+t+'00';
+    const h=parseInt(e.time.slice(0,2)),mi=e.time.slice(3,5);
+    dtEnd=dt+'T'+String(Math.min(h+1,23)).padStart(2,'0')+mi+'00';
   } else {
-    const startStr=e.date.replace(/-/g,'');
-    const nextDay=new Date(e.date+'T12:00:00');
-    nextDay.setDate(nextDay.getDate()+1);
-    const endStr=nextDay.toISOString().slice(0,10).replace(/-/g,'');
-    dates=startStr+'/'+endStr;
+    dtStart=dt;
+    const nx=new Date(e.date+'T12:00:00');nx.setDate(nx.getDate()+1);
+    dtEnd=nx.toISOString().slice(0,10).replace(/-/g,'');
   }
-  const params=new URLSearchParams({action:'TEMPLATE',text:e.title,dates,details:e.desc||''});
-  window.open('https://calendar.google.com/calendar/render?'+params.toString(),'_blank');
-  toast('Google Agenda aberto — confirme o evento lá');
+  if(isIOS){
+    // iOS: abre ICS no app Calendário nativo (sincroniza com Google)
+    const ics=[
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Ophir B7//PT','METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      e.time?`DTSTART:${dtStart}`:`DTSTART;VALUE=DATE:${dtStart}`,
+      e.time?`DTEND:${dtEnd}`:`DTEND;VALUE=DATE:${dtEnd}`,
+      `SUMMARY:${e.title}`,
+      e.desc?`DESCRIPTION:${e.desc.replace(/\n/g,'\\n')}`:'',
+      `UID:${e.id}@ophir-b7`,
+      'END:VEVENT','END:VCALENDAR'
+    ].filter(Boolean).join('\r\n');
+    const a=document.createElement('a');
+    a.href='data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    toast('Toque em "Adicionar" para salvar no Calendário');
+  } else {
+    // Android/Desktop: abre Google Agenda web
+    const dates=dtStart+'/'+dtEnd;
+    const params=new URLSearchParams({action:'TEMPLATE',text:e.title,dates,details:e.desc||''});
+    window.open('https://calendar.google.com/calendar/render?'+params.toString(),'_blank');
+    toast('Google Agenda aberto — confirme o evento');
+  }
 }
 function saveEvGoogle(){
   const title=document.getElementById('ev-title').value.trim();
