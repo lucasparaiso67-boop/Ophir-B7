@@ -1020,44 +1020,26 @@ function saveReschedule(){
   save();cm('m-reschedule');renderAg();toast('Compromisso reagendado');
   rescheduleId=null;
 }
-function addToGoogleCal(id){
-  const e=S.events.find(x=>x.id===id);if(!e)return;
-  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function buildGCalUrl(e){
   const dt=e.date.replace(/-/g,'');
-  let dtStart,dtEnd;
+  let dates;
   if(e.time){
     const t=e.time.replace(':','');
-    dtStart=dt+'T'+t+'00';
     const h=parseInt(e.time.slice(0,2)),mi=e.time.slice(3,5);
-    dtEnd=dt+'T'+String(Math.min(h+1,23)).padStart(2,'0')+mi+'00';
+    dates=dt+'T'+t+'00/'+dt+'T'+String(Math.min(h+1,23)).padStart(2,'0')+mi+'00';
   } else {
-    dtStart=dt;
     const nx=new Date(e.date+'T12:00:00');nx.setDate(nx.getDate()+1);
-    dtEnd=nx.toISOString().slice(0,10).replace(/-/g,'');
+    dates=dt+'/'+nx.toISOString().slice(0,10).replace(/-/g,'');
   }
-  if(isIOS){
-    // iOS: abre ICS no app Calendário nativo (sincroniza com Google)
-    const ics=[
-      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Ophir B7//PT','METHOD:PUBLISH',
-      'BEGIN:VEVENT',
-      e.time?`DTSTART:${dtStart}`:`DTSTART;VALUE=DATE:${dtStart}`,
-      e.time?`DTEND:${dtEnd}`:`DTEND;VALUE=DATE:${dtEnd}`,
-      `SUMMARY:${e.title}`,
-      e.desc?`DESCRIPTION:${e.desc.replace(/\n/g,'\\n')}`:'',
-      `UID:${e.id}@ophir-b7`,
-      'END:VEVENT','END:VCALENDAR'
-    ].filter(Boolean).join('\r\n');
-    const a=document.createElement('a');
-    a.href='data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-    toast('Toque em "Adicionar" para salvar no Calendário');
-  } else {
-    // Android/Desktop: abre Google Agenda web
-    const dates=dtStart+'/'+dtEnd;
-    const params=new URLSearchParams({action:'TEMPLATE',text:e.title,dates,details:e.desc||''});
-    window.open('https://calendar.google.com/calendar/render?'+params.toString(),'_blank');
-    toast('Google Agenda aberto — confirme o evento');
-  }
+  return 'https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:e.title,dates,details:e.desc||''}).toString();
+}
+function addToGoogleCal(id){
+  const e=S.events.find(x=>x.id===id);if(!e)return;
+  const a=document.createElement('a');
+  a.href=buildGCalUrl(e);
+  a.target='_blank';a.rel='noopener';
+  a.style.display='none';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
 }
 function saveEvGoogle(){
   const title=document.getElementById('ev-title').value.trim();
@@ -1065,16 +1047,38 @@ function saveEvGoogle(){
   if(!title){toast('Informe o título');return;}
   if(!dt){toast('Informe a data');return;}
   const id=uid();
-  S.events.push({
+  const ev={
     id,title,date:dt,
     time:document.getElementById('ev-time').value,
     desc:document.getElementById('ev-desc').value.trim(),
     context:document.getElementById('ev-ctx').value,
     source:'local',status:'pendente',
     createdAt:new Date().toISOString()
-  });
-  save();cm('m-ev');renderAg();
-  addToGoogleCal(id);
+  };
+  S.events.push(ev);
+  save();cm('m-ev');go('agenda');
+  // Mostra banner com link real para o usuário tocar
+  showGCalBanner(ev);
+}
+function showGCalBanner(e){
+  const existing=document.getElementById('gcal-banner');
+  if(existing) existing.remove();
+  const banner=document.createElement('div');
+  banner.id='gcal-banner';
+  banner.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--s3);border:1px solid rgba(72,136,204,.4);border-radius:8px;padding:12px 18px;z-index:5000;display:flex;align-items:center;gap:12px;max-width:340px;width:90%;box-shadow:0 4px 20px rgba(0,0,0,.4)';
+  banner.innerHTML=`
+    <div style="flex:1;font-size:12px;color:var(--text);line-height:1.4">
+      <div style="font-weight:600;margin-bottom:2px">Compromisso salvo!</div>
+      <div style="color:var(--muted);font-size:11px">Toque para adicionar ao Google Agenda</div>
+    </div>
+    <a href="${buildGCalUrl(e)}" target="_blank" rel="noopener"
+      style="background:var(--blue);color:#fff;padding:8px 14px;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.06em;white-space:nowrap;flex-shrink:0">
+      📅 ABRIR
+    </a>
+    <button onclick="document.getElementById('gcal-banner').remove()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0 0 0 4px;line-height:1">×</button>
+  `;
+  document.body.appendChild(banner);
+  setTimeout(()=>{ if(banner.parentNode) banner.remove(); },15000);
 }
 function delEv(id){ S.events=S.events.filter(e=>e.id!==id);save();renderAg();toast('Compromisso removido'); }
 function fAg(btn){
@@ -1126,7 +1130,7 @@ function renderAg(){
         if(!isDone){
           acts+=`<button class="btn btn-success btn-sm" onclick="completeEv('${e.id}')" title="Concluir">✓</button>`;
           acts+=`<button class="btn btn-ghost btn-sm" onclick="openRescheduleModal('${e.id}')" title="Reagendar">↻</button>`;
-          acts+=`<button class="btn btn-ghost btn-sm" onclick="addToGoogleCal('${e.id}')" title="Abrir no Google Agenda" style="color:var(--blue)">📅</button>`;
+          acts+=`<a class="btn btn-ghost btn-sm" href="${buildGCalUrl(e)}" target="_blank" rel="noopener" title="Adicionar ao Google Agenda" style="color:var(--blue);text-decoration:none">📅</a>`;
         } else {
           acts+=`<button class="btn btn-ghost btn-sm" onclick="reopenEv('${e.id}')" title="Reabrir">↺</button>`;
           acts+=`<button class="btn btn-ghost btn-sm" onclick="openRescheduleModal('${e.id}')" title="Reagendar">↻</button>`;
