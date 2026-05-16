@@ -376,10 +376,14 @@
       <div id="page-funil" class="page">
         <div class="sh">
           <div>
-            <div class="sh-title">Funil de Vendas</div>
-            <div class="sh-sub">Pipeline de negócios</div>
+            <div class="sh-title">Funil</div>
+            <div class="sh-sub" id="funil-sub">Pipeline de negócios</div>
           </div>
-          <button class="btn btn-primary" onclick="openDealModal()">+ Negócio</button>
+          <button class="btn btn-primary" id="funil-add-btn" onclick="openFunilModal()">+ Negócio</button>
+        </div>
+        <div class="fbar">
+          <button class="fbtn active" data-ftab="vendas" onclick="setFunilTab('vendas')">Vendas</button>
+          <button class="fbtn" data-ftab="captacoes" onclick="setFunilTab('captacoes')">Captações</button>
         </div>
         <div class="funil-board" id="funil-board"></div>
       </div>
@@ -531,6 +535,48 @@
   </div>
 </div>
 
+<!-- CAPTAÇÃO -->
+<div class="overlay" id="m-capt" style="display:none" onclick="omo(event,'m-capt')">
+  <div class="modal">
+    <div class="modal-title">Nova Captação</div>
+    <div class="fg">
+      <label class="fl">Imóvel / Endereço</label>
+      <input type="text" id="cp-title" class="fc" placeholder="Ex: Apto 120m² R. Oscar Freire...">
+    </div>
+    <div class="fg">
+      <label class="fl">Proprietário</label>
+      <input type="text" id="cp-owner" class="fc" placeholder="Nome do proprietário...">
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label class="fl">Valor pretendido (R$)</label>
+        <input type="number" id="cp-val" class="fc" placeholder="0,00" min="0">
+      </div>
+      <div class="fg">
+        <label class="fl">Etapa Inicial</label>
+        <select id="cp-stage" class="fc">
+          <option value="prospeccao">Prospecção</option>
+          <option value="contato">Contato</option>
+          <option value="visita">Visita</option>
+          <option value="avaliacao">Avaliação</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Contato</label>
+      <input type="text" id="cp-contact" class="fc" placeholder="Telefone, e-mail...">
+    </div>
+    <div class="fg">
+      <label class="fl">Notas</label>
+      <textarea id="cp-notes" class="fc" placeholder="Observações sobre o imóvel..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cm('m-capt')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCapt()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- PLANO -->
 <div class="overlay" id="m-plano" style="display:none" onclick="omo(event,'m-plano')">
   <div class="modal">
@@ -580,8 +626,8 @@ const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.readonly';
 const SK = 'ophir_b7_v3';
 
 // ══ STATE
-let S = { ctx:'profissional', transactions:[], deals:[], events:[], goals:[], plans:[], gcalToken:null, gcalAt:null };
-let F = { ag:'todos', as:'pendente', pc:'todos', ps:'todos' };
+let S = { ctx:'profissional', transactions:[], deals:[], captacoes:[], events:[], goals:[], plans:[], gcalToken:null, gcalAt:null };
+let F = { ag:'todos', as:'pendente', pc:'todos', ps:'todos', ftab:'vendas' };
 let curPage='painel', rescheduleId=null, gcalClient=null;
 
 // ══ PERSISTENCE
@@ -890,11 +936,28 @@ function gcalDisc(){
   save();renderAg();toast('Desconectado do Google Calendar');
 }
 
-// ══ FUNIL
+// ══ FUNIL — VENDAS
 const STAGES=['lead','visita','proposta','fechado','perdido'];
 const SL={lead:'Lead',visita:'Visita',proposta:'Proposta',fechado:'Fechado',perdido:'Perdido'};
 const SC={lead:'#4888CC',visita:'#C87830',proposta:'#8060A8',fechado:'#3DAA6C',perdido:'#C0403C'};
 const OPEN=['lead','visita','proposta'];
+
+// ══ FUNIL — CAPTAÇÕES
+const CSTAGES=['prospeccao','contato','visita','avaliacao','captado','perdido'];
+const CSL={prospeccao:'Prospecção',contato:'Contato',visita:'Visita',avaliacao:'Avaliação',captado:'Captado',perdido:'Perdido'};
+const CSC={prospeccao:'#4888CC',contato:'#C87830',visita:'#8060A8',avaliacao:'#E0C070',captado:'#3DAA6C',perdido:'#C0403C'};
+const COPEN=['prospeccao','contato','visita','avaliacao'];
+
+function setFunilTab(tab){
+  F.ftab=tab;
+  document.querySelectorAll('[data-ftab]').forEach(b=>b.classList.toggle('active',b.dataset.ftab===tab));
+  const sub=document.getElementById('funil-sub');
+  const btn=document.getElementById('funil-add-btn');
+  if(tab==='vendas'){ sub.textContent='Pipeline de negócios'; btn.textContent='+ Negócio'; }
+  else { sub.textContent='Pipeline de imóveis em captação'; btn.textContent='+ Captação'; }
+  renderFunil();
+}
+function openFunilModal(){ F.ftab==='captacoes'?openCaptModal():openDealModal(); }
 
 function openDealModal(){
   ['dl-title','dl-client','dl-notes'].forEach(id=>document.getElementById(id).value='');
@@ -921,8 +984,56 @@ function closeDeal(id){ const d=S.deals.find(x=>x.id===id);if(!d)return;d.stage=
 function loseDeal(id){ const d=S.deals.find(x=>x.id===id);if(!d)return;d.stage='perdido';save();renderFunil();toast('Marcado como perdido'); }
 function reopenDeal(id){ const d=S.deals.find(x=>x.id===id);if(!d)return;d.stage='lead';save();renderFunil();toast('Reaberto como Lead'); }
 function delDeal(id){ S.deals=S.deals.filter(x=>x.id!==id);save();renderFunil();toast('Negócio removido'); }
+
+function openCaptModal(){
+  ['cp-title','cp-owner','cp-contact','cp-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('cp-val').value='';
+  document.getElementById('cp-stage').value='prospeccao';
+  om('m-capt');
+}
+function saveCapt(){
+  const title=document.getElementById('cp-title').value.trim();
+  const owner=document.getElementById('cp-owner').value.trim();
+  if(!title){toast('Informe o imóvel');return;}
+  if(!owner){toast('Informe o proprietário');return;}
+  S.captacoes.push({id:uid(),title,owner,
+    contact:document.getElementById('cp-contact').value.trim(),
+    value:parseFloat(document.getElementById('cp-val').value)||0,
+    stage:document.getElementById('cp-stage').value,
+    notes:document.getElementById('cp-notes').value.trim(),
+    createdAt:new Date().toISOString()});
+  save();cm('m-capt');renderFunil();toast('Captação adicionada ao funil');
+}
+function advanceCapt(id){
+  const c=S.captacoes.find(x=>x.id===id);if(!c)return;
+  const i=COPEN.indexOf(c.stage);if(i<0||i>=COPEN.length-1)return;
+  c.stage=COPEN[i+1];save();renderFunil();toast('Avançado para '+CSL[c.stage]);
+}
+function captureCapt(id){ const c=S.captacoes.find(x=>x.id===id);if(!c)return;c.stage='captado';save();renderFunil();toast('Imóvel captado!'); }
+function loseCapt(id){ const c=S.captacoes.find(x=>x.id===id);if(!c)return;c.stage='perdido';save();renderFunil();toast('Marcado como perdido'); }
+function reopenCapt(id){ const c=S.captacoes.find(x=>x.id===id);if(!c)return;c.stage='prospeccao';save();renderFunil();toast('Reaberto'); }
+function delCapt(id){ S.captacoes=S.captacoes.filter(x=>x.id!==id);save();renderFunil();toast('Captação removida'); }
+
 function renderFunil(){
-  document.getElementById('funil-board').innerHTML=STAGES.map(stage=>{
+  const board=document.getElementById('funil-board');
+  if(F.ftab==='captacoes'){
+    board.innerHTML=CSTAGES.map(stage=>{
+      const items=S.captacoes.filter(c=>c.stage===stage),col=CSC[stage];
+      const closed=['captado','perdido'].includes(stage);
+      return `
+        <div class="funil-col">
+          <div class="fcol-hd" style="background:${col}14;border:1px solid ${col}28">
+            <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0"></div>
+            <div class="fcol-title" style="color:${col}">${CSL[stage]}</div>
+            <div class="fcol-cnt" style="color:${col}">${items.length}</div>
+            ${!closed&&items.length?`<div style="margin-left:auto;font-family:'Cormorant Garamond',serif;font-size:13px;color:${col};opacity:.8">${fmt(items.reduce((s,c)=>s+c.value,0))}</div>`:''}
+          </div>
+          ${items.length?items.map(c=>captCard(c,stage)).join(''):'<div style="text-align:center;padding:18px;color:var(--dim);font-size:10px;letter-spacing:.08em;text-transform:uppercase">Vazio</div>'}
+        </div>`;
+    }).join('');
+    return;
+  }
+  board.innerHTML=STAGES.map(stage=>{
     const deals=S.deals.filter(d=>d.stage===stage),c=SC[stage];
     return `
       <div class="funil-col">
@@ -953,6 +1064,26 @@ function dealCard(d,stage){
       <div class="deal-c">◉ ${d.client}</div>
       ${d.value?`<div class="deal-v">${fmt(d.value)}</div>`:''}
       ${d.notes?`<div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">${d.notes}</div>`:''}
+      <div class="deal-act">${acts}</div>
+    </div>`;
+}
+function captCard(c,stage){
+  const i=COPEN.indexOf(stage),isOpen=i>=0;
+  let acts='';
+  if(isOpen){
+    if(i<COPEN.length-1) acts+=`<button class="btn-adv" onclick="advanceCapt('${c.id}')">→ ${CSL[COPEN[i+1]]}</button>`;
+    else acts+=`<button class="btn-adv" onclick="captureCapt('${c.id}')">✓ Captar</button>`;
+    acts+=`<button class="btn btn-ghost btn-sm" onclick="loseCapt('${c.id}')">✗</button>`;
+  } else {
+    acts+=`<button class="btn btn-ghost btn-sm" onclick="reopenCapt('${c.id}')">↩ Reabrir</button>`;
+  }
+  acts+=`<button class="btn btn-danger btn-sm" onclick="delCapt('${c.id}')">✕</button>`;
+  return `
+    <div class="deal">
+      <div class="deal-t">${c.title}</div>
+      <div class="deal-c">◉ ${c.owner}${c.contact?' · '+c.contact:''}</div>
+      ${c.value?`<div class="deal-v">${fmt(c.value)}</div>`:''}
+      ${c.notes?`<div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">${c.notes}</div>`:''}
       <div class="deal-act">${acts}</div>
     </div>`;
 }
