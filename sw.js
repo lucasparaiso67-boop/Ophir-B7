@@ -1,4 +1,4 @@
-const CACHE = 'ophir-b7-v6';
+const CACHE = 'ophir-b7-v7';
 
 self.addEventListener('install', e => {
   const base = self.registration.scope;

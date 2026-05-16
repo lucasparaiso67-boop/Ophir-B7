@@ -264,6 +264,10 @@
         Importar
         <input type="file" accept=".json" style="display:none" onchange="importData(event)">
       </label>
+      <button class="btn btn-ghost btn-sm" onclick="openSnapsModal()" title="Histórico de snapshots automáticos">
+        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="10"/></svg>
+        Histórico
+      </button>
     </div>
   </header>
 
@@ -617,6 +621,20 @@
   </div>
 </div>
 
+<!-- SNAPSHOTS -->
+<div class="overlay" id="m-snaps" style="display:none" onclick="omo(event,'m-snaps')">
+  <div class="modal">
+    <div class="modal-title">Histórico Automático</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:18px;letter-spacing:.02em;line-height:1.5">
+      Snapshots salvos automaticamente no aparelho (máx. 5, intervalo mínimo de 1h). Use em caso de exclusão acidental. Para proteção contra perda de dados do iPhone, exporte um backup em arquivo regularmente.
+    </div>
+    <div id="snaps-list" class="item-list"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cm('m-snaps')">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -624,14 +642,23 @@
 const GCAL_CLIENT_ID = 'SEU_GOOGLE_CLIENT_ID_AQUI';
 const GCAL_SCOPE = 'https://www.googleapis.com/auth/calendar.readonly';
 const SK = 'ophir_b7_v3';
+const SNAP_K = 'ophir_b7_snapshots';
+const LAST_BKP_K = 'ophir_b7_last_backup';
+const SNAP_INTERVAL_MS = 60*60*1000;   // mínimo 1h entre snapshots
+const SNAP_MAX = 5;                    // últimos 5 snapshots
+const BKP_REMIND_DAYS = 7;             // lembra backup em arquivo a cada 7 dias
 
 // ══ STATE
 let S = { ctx:'profissional', transactions:[], deals:[], captacoes:[], events:[], goals:[], plans:[], gcalToken:null, gcalAt:null };
 let F = { ag:'todos', as:'pendente', pc:'todos', ps:'todos', ftab:'vendas' };
-let curPage='painel', rescheduleId=null, gcalClient=null;
+let curPage='painel', rescheduleId=null, gcalClient=null, persistRequested=false;
 
 // ══ PERSISTENCE
-function save(){ localStorage.setItem(SK, JSON.stringify(S)); }
+function save(){
+  localStorage.setItem(SK, JSON.stringify(S));
+  snapshot();
+  if(!persistRequested) requestPersistent();
+}
 function load(){
   try{
     const r=localStorage.getItem(SK);
@@ -642,6 +669,110 @@ function load(){
       S={...S,...parsed};
     }
   }catch(e){}
+}
+
+// ══ BACKUP AUTOMÁTICO
+async function requestPersistent(){
+  persistRequested=true;
+  if(navigator.storage && navigator.storage.persist){
+    try{ await navigator.storage.persist(); }catch(e){}
+  }
+}
+function snapshot(){
+  try{
+    const arr=JSON.parse(localStorage.getItem(SNAP_K)||'[]');
+    const now=Date.now();
+    if(arr[0] && now-arr[0].t < SNAP_INTERVAL_MS) return;
+    arr.unshift({t:now,d:S});
+    while(arr.length>SNAP_MAX) arr.pop();
+    localStorage.setItem(SNAP_K, JSON.stringify(arr));
+  }catch(e){}
+}
+function getSnapshots(){
+  try{ return JSON.parse(localStorage.getItem(SNAP_K)||'[]'); }catch(e){ return []; }
+}
+function restoreSnapshot(idx){
+  const arr=getSnapshots();
+  if(!arr[idx]) return;
+  if(!confirm('Restaurar dados de '+new Date(arr[idx].t).toLocaleString('pt-BR')+'? Os dados atuais serão substituídos.')) return;
+  S={...S,...arr[idx].d};
+  localStorage.setItem(SK, JSON.stringify(S));
+  cm('m-snaps');
+  render(curPage);
+  toast('Dados restaurados');
+}
+async function autoBackupShare(){
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const fname=`ophir-b7-backup-${new Date().toISOString().slice(0,10)}.json`;
+  if(navigator.canShare){
+    try{
+      const file=new File([blob],fname,{type:'application/json'});
+      if(navigator.canShare({files:[file]})){
+        await navigator.share({files:[file],title:'Backup Ophir B7',text:'Backup automático Ophir B7'});
+        localStorage.setItem(LAST_BKP_K,Date.now().toString());
+        toast('Backup salvo');
+        const b=document.getElementById('bkp-banner');if(b) b.remove();
+        return;
+      }
+    }catch(e){
+      if(e.name==='AbortError') return;
+    }
+  }
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=fname;a.click();URL.revokeObjectURL(url);
+  localStorage.setItem(LAST_BKP_K,Date.now().toString());
+  toast('Backup baixado');
+  const b=document.getElementById('bkp-banner');if(b) b.remove();
+}
+function checkBackupReminder(){
+  const last=parseInt(localStorage.getItem(LAST_BKP_K)||'0');
+  const now=Date.now();
+  const hasData=S.events.length||S.deals.length||S.captacoes.length||S.plans.length||S.transactions.length;
+  if(!hasData) return;
+  if(last && now-last < BKP_REMIND_DAYS*24*60*60*1000) return;
+  showBkpBanner(last?Math.floor((now-last)/(24*60*60*1000)):null);
+}
+function showBkpBanner(days){
+  if(document.getElementById('bkp-banner')) return;
+  const banner=document.createElement('div');
+  banner.id='bkp-banner';
+  banner.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--s3);border:1px solid var(--gold-b);border-radius:8px;padding:12px 16px;z-index:5000;display:flex;align-items:center;gap:10px;max-width:340px;width:92%;box-shadow:0 4px 20px rgba(0,0,0,.5)';
+  const txt=days===null?'Faça seu primeiro backup em arquivo':`Último backup há ${days} dia${days!==1?'s':''}`;
+  banner.innerHTML=`
+    <div style="flex:1;font-size:12px;color:var(--text);line-height:1.4">
+      <div style="font-weight:600;margin-bottom:2px;color:var(--gold)">Backup recomendado</div>
+      <div style="color:var(--muted);font-size:11px">${txt}</div>
+    </div>
+    <button onclick="autoBackupShare()" style="background:var(--gold);color:#050505;padding:8px 14px;border-radius:6px;font-size:11px;font-weight:700;border:none;letter-spacing:.06em;cursor:pointer;white-space:nowrap;flex-shrink:0;text-transform:uppercase">Salvar</button>
+    <button onclick="dismissBkpBanner()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0 0 0 4px;line-height:1">×</button>
+  `;
+  document.body.appendChild(banner);
+}
+function dismissBkpBanner(){
+  const b=document.getElementById('bkp-banner');if(b) b.remove();
+  localStorage.setItem(LAST_BKP_K,(Date.now()-(BKP_REMIND_DAYS-1)*24*60*60*1000).toString());
+}
+function openSnapsModal(){
+  const arr=getSnapshots();
+  const body=document.getElementById('snaps-list');
+  if(!arr.length){
+    body.innerHTML='<div class="empty"><div class="empty-ico">◌</div><div class="empty-txt">Nenhum snapshot disponível</div></div>';
+  } else {
+    body.innerHTML=arr.map((s,i)=>{
+      const c=(s.d.transactions||[]).length, d=(s.d.deals||[]).length, cp=(s.d.captacoes||[]).length, e=(s.d.events||[]).length, p=(s.d.plans||[]).length;
+      return `
+        <div class="irow" style="align-items:flex-start">
+          <div class="iicon" style="background:var(--gold-d);color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:18px">${i+1}</div>
+          <div class="iinfo">
+            <div class="ititle">${new Date(s.t).toLocaleString('pt-BR')}</div>
+            <div class="isub">${e} eventos · ${d} negócios · ${cp} captações · ${p} planos · ${c} transações</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="restoreSnapshot(${i})">Restaurar</button>
+        </div>`;
+    }).join('');
+  }
+  om('m-snaps');
 }
 
 // ══ UTILS
@@ -1142,13 +1273,7 @@ function renderPlanos(){
 
 // ══ EXPORT / IMPORT
 function exportData(){
-  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=`ophir-b7-backup-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();URL.revokeObjectURL(url);
-  toast('Backup exportado com sucesso');
+  autoBackupShare();
 }
 function importData(e){
   const file=e.target.files[0];if(!file)return;
@@ -1156,7 +1281,7 @@ function importData(e){
   reader.onload=ev=>{
     try{
       const parsed=JSON.parse(ev.target.result);
-      if(!parsed.transactions&&!parsed.deals&&!parsed.events){throw new Error('Arquivo inválido');}
+      if(!parsed.transactions&&!parsed.deals&&!parsed.events&&!parsed.captacoes&&!parsed.plans){throw new Error('Arquivo inválido');}
       if(parsed.events) parsed.events=parsed.events.map(ev=>({status:'pendente',...ev}));
       S={...S,...parsed};
       save();render(curPage);toast('Dados importados com sucesso');
@@ -1188,9 +1313,11 @@ if('serviceWorker' in navigator){
 // ══ INIT
 function init(){
   load();
+  requestPersistent();
   document.querySelectorAll('.ctx-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase().trim()===S.ctx));
   renderPainel();
   setTimeout(initGCal,2000);
+  setTimeout(checkBackupReminder,4000);
 }
 window.addEventListener('load',init);
 </script>
