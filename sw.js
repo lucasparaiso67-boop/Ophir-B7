@@ -1,13 +1,14 @@
-const CACHE = 'ophir-b7-v1';
-const ASSETS = [
-  '/',
-  '/index.html',
-  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter+Tight:wght@300;400;500;600;700&display=swap'
-];
+const CACHE = 'ophir-b7-v3';
 
 self.addEventListener('install', e => {
+  const base = self.registration.scope;
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(c => c.addAll([
+      base,
+      base + 'index.html',
+      base + 'manifest.json',
+      'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter+Tight:wght@300;400;500;600&display=swap'
+    ]).catch(() => {})).then(() => self.skipWaiting())
   );
 });
 
@@ -20,18 +21,17 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Deixa requisições externas passarem normalmente se não estiverem no cache
+  if (e.request.method !== 'GET') return;
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(res => {
         if (!res || res.status !== 200 || res.type === 'opaque') return res;
-        const resClone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, resClone));
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
         return res;
       }).catch(() => {
-        // Offline: retorna index.html para navegação
-        if (e.request.mode === 'navigate') return caches.match('/index.html');
+        if (e.request.mode === 'navigate') return caches.match(self.registration.scope + 'index.html');
       });
     })
   );
