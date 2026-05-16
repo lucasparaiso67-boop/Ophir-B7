@@ -1,4 +1,4 @@
-const CACHE = 'ophir-b7-v5';
+const CACHE = 'ophir-b7-v6';
 
 self.addEventListener('install', e => {
   const base = self.registration.scope;
@@ -22,6 +22,25 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  const isHTML = e.request.mode === 'navigate'
+    || e.request.destination === 'document'
+    || url.pathname.endsWith('/')
+    || url.pathname.endsWith('index.html');
+
+  if (isHTML) {
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' }).then(res => {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return res;
+      }).catch(() =>
+        caches.match(e.request).then(c => c || caches.match(self.registration.scope + 'index.html'))
+      )
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
